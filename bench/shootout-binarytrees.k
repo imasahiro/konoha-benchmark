@@ -1,13 +1,17 @@
 /* The Great Computer Language Shootout
    http://shootout.alioth.debian.org/
-   contributed by Kimio Kuramitsu
+   contributed by Kimio Kuramitsu, imasahiro, Wakamatsu
 */
 
-K.import("konoha");
+K.import("konoha.null");
+K.import("konoha.class");
+K.import("konoha.while");
+K.import("konoha.int");
+K.import("konoha.assign");
 K.import("konoha.io");
 
-int MINDEPTH = 4;
-int N=20;
+MINDEPTH = 4;
+N=14;
 
 class TreeNode {
 	TreeNode left, right;

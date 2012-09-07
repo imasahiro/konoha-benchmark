@@ -16,11 +16,14 @@ RETURN_A   = 6;
 
 K.import("konoha.while");
 K.import("konoha.assign");
+K.import("konoha.class");
+K.import("konoha.array");
+
 
 // the main interpreter loop
-int interpret(Int[] bytecode, int a) {
+int interpret(int[] bytecode, int a) {
     int pc = 0;
-    Int[] regs = new Int[256];
+    int[] regs = new int[256];
     while (true) {
         int opcode = bytecode[pc];
         pc += 1;
@@ -58,16 +61,12 @@ int interpret(Int[] bytecode, int a) {
     return 0;
 }
 
-K.import("konoha.class");
-
 class Bench1 {
-    Bench1() {
-        this.name = "toy interpreter N="+N;
-    }
-    @Override void run() {
+    Bench1() {}
+    void run() {
         // the program we want to interpret
         // it computes the square of its argument
-        Int[] bytecode = [
+        int[] bytecode = [
             MOV_A_R,    0, // i = a
             MOV_A_R,    1, // copy of 'a'
             // 4:
@@ -83,12 +82,8 @@ class Bench1 {
             RETURN_A
                 ];
         int n = N;
-        OUT.println(interpret(bytecode, n));
+        System.p(interpret(bytecode, n));
     }
 }
 
-void main (String[] args) {
-    Benchmark bm = new Benchmark(1);
-    bm.addTask(new Bench1());
-    bm.run();
-}
+new Bench1().run();
