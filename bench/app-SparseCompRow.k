@@ -1,130 +1,127 @@
 /*
  * scimark2 SparseCompRow bench
  */
-using konoha.math.*;
-include "./scimark/scimarkutil/Constants.k";
-include "./scimark/scimarkutil/Random.k";
-include "_bench.k";
-//package jnt.scimark2;
+K.import("konoha");
+K.import("konoha.math");
 
-public class SparseCompRow
-{
-    /* multiple iterations used to make kernel have roughly
-       same granulairty as other Scimark kernels. */
+SPARSE_SIZE_M = 1000;
+SPARSE_SIZE_NZ = 5000;
 
-    public static double num_flops(int n, int nz, int num_iterations)
-    {
-        /* Note that if nz does not divide N evenly, then the
-           actual number of nonzeros used is adjusted slightly.
-           */
-        int actual_nz = (nz/n) * n;
-        return ((double)actual_nz) * 2.0 * ((double) num_iterations);
-    }
+class SparseCompRow {
+	/* multiple iterations used to make kernel have roughly
+	   same granulairty as other Scimark kernels. */
+
+	float num_flops(int n, int nz, int num_iterations) {
+		/* Note that if nz does not divide N evenly, then the
+		   actual number of nonzeros used is adjusted slightly.
+		 */
+		int actual_nz = (nz/n) * n;
+		return (actual_nz.tofloat()) * 2.0 * (num_iterations.tofloat());
+	}
 
 
-    /* computes  a matrix-vector multiply with a sparse matrix
-       held in compress-row format.  If the size of the matrix
-       in MxN with nz nonzeros, then the val[] is the nz nonzeros,
-       with its ith entry in column col[i].  The integer vector row[]
-       is of size M+1 and row[i] points to the begining of the
-       ith row in col[].  
-       */
+	/* computes  a matrix-vector multiply with a sparse matrix
+	   held in compress-row format.  If the size of the matrix
+	   in MxN with nz nonzeros, then the val[] is the nz nonzeros,
+	   with its ith entry in column col[i].  The integer vector row[]
+	   is of size M+1 and row[i] points to the begining of the
+	   ith row in col[].  
+	 */
 
-    public static void matmult( double[] y, double[] val, int[] row,
-            int[] col, double[] x, int num_iterations)
-    {
-        int m = row.size - 1;
+	void matmult( float[] y, float[] val, int[] row,
+			int[] col, float[] x, int num_iterations) {
+		int m = row.size - 1;
 
-        for (int reps=0; reps<num_iterations; reps++)
-        {
+		int reps = 0;
+		while (reps < num_iterations) {
 
-            for (int r=0; r<m; r++)
-            {
-                double sum = 0.0; 
-                int rowR = row[r];
-                int rowRp1 = row[r+1];
-                for (int i=rowR; i<rowRp1; i++)
-                    sum += x[ col[i] ] * val[i];
-                y[r] = sum;
-            }
-        }
-    }
+			int r = 0;
+			while (r < m) {
+				float sum = 0.0; 
+				int rowR = row[r];
+				int rowRp1 = row[r+1];
+				int i = rowR;
+				while (i < rowRp1) {
+					sum += x[ col[i] ] * val[i];
+					i += 1;
+				}
+				y[r] = sum;
+				r += 1;
+			}
+			reps += 1;
+		}
+	}
 
 }
 
-static double[] randomVector(int n, Random r)
-{
-    double[] a = new double[n];
-
-    for (int i=0; i<n; i++) {
-        a[i] = r.nextDouble();
-    }
-    return a;
+Array[float] randomVector(int n) {
+	Array[float] a = new float[n];
+	int i = 0;
+	while (i < n) {
+		a[i] = Math.random();
+		i += 1;
+	}
+	return a;
 }
 
-class Bench1 extends BenchMarkTask {
-    Bench1() {
-        this.name = "SparseCompRow";
-    }
-    @Override void run() {
-        Random r = new Random(RANDOM_SEED);
-        int n = SPARSE_SIZE_M;
-        int nz = SPARSE_SIZE_NZ;
-        // initialize vector multipliers and storage for result
-        // y = A*y;
+class Bench1 {
+	void run() {
+		int n = SPARSE_SIZE_M;
+		int nz = SPARSE_SIZE_NZ;
+		// initialize vector multipliers and storage for result
+		// y = A*y;
 
-        double[] x = randomVector(n, r);
-        double[] y = new double[n];
+		Array[float] x = randomVector(n);
+		Array[float] y = new float[n];
 
-        // initialize square sparse matrix
-        //
-        // for this test, we create a sparse matrix wit M/nz nonzeros
-        // per row, with spaced-out evenly between the begining of the
-        // row to the main diagonal.  Thus, the resulting pattern looks
-        // like
-        //             +-----------------+
-        //             +*                +
-        //             +***              +
-        //             +* * *            +
-        //             +** *  *          +
-        //             +**  *   *        +
-        //             +* *   *   *      +
-        //             +*  *   *    *    +
-        //             +*   *    *    *  + 
-        //             +-----------------+
-        //
-        // (as best reproducible with integer artihmetic)
-        // note that the first nr rows will have elements past
-        // the diagonal.
+		// initialize square sparse matrix
+		//
+		// for this test, we create a sparse matrix wit M/nz nonzeros
+		// per row, with spaced-out evenly between the begining of the
+		// row to the main diagonal.  Thus, the resulting pattern looks
+		// like
+		//             +-----------------+
+		//             +*                +
+		//             +***              +
+		//             +* * *            +
+		//             +** *  *          +
+		//             +**  *   *        +
+		//             +* *   *   *      +
+		//             +*  *   *    *    +
+		//             +*   *    *    *  + 
+		//             +-----------------+
+		//
+		// (as best reproducible with integer artihmetic)
+		// note that the first nr rows will have elements past
+		// the diagonal.
 
-        int nr = nz/n; 		// average number of nonzeros per row
-        int anz = nr *n;   // _actual_ number of nonzeros
+		int nr = nz/n; 		// average number of nonzeros per row
+		int anz = nr *n;   // _actual_ number of nonzeros
 
-        double[] val = randomVector(anz, r);
-        int[] col = new int[anz];
-        int[] row = new int[n+1];
+		Array[float] val = randomVector(anz);
+		Array[int] col = new int[anz];
+		Array[int] row = new int[n+1];
 
-        row[0] = 0;
-        for (int r=0; r<n; r++) {
-            // initialize elements for row r
+		row[0] = 0;
+		int r = 0;
+		while (r < n) {
+			// initialize elements for row r
 
-            int rowr = row[r];
-            row[r+1] = rowr + nr;
-            int step = r/ nr;
-            if (step < 1) {
-                step = 1;   // take at least unit steps
-            }
-
-            for (int i=0; i<nr; i++) {
-                col[rowr+i] = i*step;
-            }
-        }
-        SparseCompRow.matmult(y, val, row, col, x, 400);
-    }
+			int rowr = row[r];
+			row[r+1] = rowr + nr;
+			int step = r/ nr;
+			if (step < 1) {
+				step = 1;   // take at least unit steps
+			}
+			int i = 0;
+			while (i < nr) {
+				col[rowr+i] = i*step;
+				i += 1;
+			}
+			r += 1;
+		}
+		SparseCompRow.matmult(y, val, row, col, x, 400);
+	}
 }
 
-void main (String[] args) {
-    Benchmark bm = new Benchmark(1);
-    bm.addTask new Bench1();
-    bm.run();
-}
+new Bench1().run();
