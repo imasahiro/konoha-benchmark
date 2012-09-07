@@ -5,15 +5,16 @@
  * modified slightly by Chad Whipkey
  */
 
-include "_bench.k";
-using konoha.math.Math;
+K.import("konoha");
+K.import("konoha.io");
+K.import("konoha.math");
 
-PI = 3.141592653589793;
-SOLAR_MASS = 4 * PI * PI;
-DAYS_PER_YEAR = 365.24;
+float PI = 3.141592653589793;
+float SOLAR_MASS = 4 * PI * PI;
+float DAYS_PER_YEAR = 365.24;
 
 class Body {
-    double x, y, z, vx, vy, vz, mass;
+    float x, y, z, vx, vy, vz, mass;
 
     @Static Body jupiter(){
         Body p = new Body();
@@ -69,7 +70,7 @@ class Body {
         return p;
     }
 
-    Body offsetMomentum(double px, double py, double pz){
+    Body offsetMomentum(float px, float py, float pz){
         vx = -px / SOLAR_MASS;
         vy = -py / SOLAR_MASS;
         vz = -pz / SOLAR_MASS;
@@ -81,28 +82,32 @@ class NBodySystem {
     Body[] bodies;
 
     NBodySystem() {
-        double px = 0.0;
-        double py = 0.0;
-        double pz = 0.0;
+        float px = 0.0;
+        float py = 0.0;
+        float pz = 0.0;
         bodies = [Body.sun(), Body.jupiter(), Body.saturn(), Body.uranus(), Body.neptune()];
-        for(int i=0; i < bodies.size; ++i) {
+        //for(int i=0; i < bodies.size; ++i) {
+        int i=0; while(i<bodies.size) {
             px += bodies[i].vx * bodies[i].mass;
             py += bodies[i].vy * bodies[i].mass;
             pz += bodies[i].vz * bodies[i].mass;
+            i+=1;
         }
         bodies[0].offsetMomentum(px,py,pz);
     }
 
-    void advance(double dt) {
-        for(int i=0; i < bodies.size; ++i) {
+    void advance(float dt) {
+        //for(int i=0; i < bodies.size; ++i) {
+        int i=0; while(i<bodies.size) {
             Body iBody = bodies[i];
-            for(int j=i+1; j < bodies.size; ++j) {
-                double dx = iBody.x - bodies[j].x;
-                double dy = iBody.y - bodies[j].y;
-                double dz = iBody.z - bodies[j].z;
-                double dSquared = dx * dx + dy * dy + dz * dz;
-                double distance = Math.sqrt(dSquared);
-                double mag = dt / (dSquared * distance);
+            //for(int j=i+1; j < bodies.size; ++j) {
+            int j=i+1; while(j<bodies.size) {
+                float dx = iBody.x - bodies[j].x;
+                float dy = iBody.y - bodies[j].y;
+                float dz = iBody.z - bodies[j].z;
+                float dSquared = dx * dx + dy * dy + dz * dz;
+                float distance = Math.sqrt(dSquared);
+                float mag = dt / (dSquared * distance);
 
                 iBody.vx -= dx * bodies[j].mass * mag;
                 iBody.vy -= dy * bodies[j].mass * mag;
@@ -111,26 +116,32 @@ class NBodySystem {
                 bodies[j].vx += dx * iBody.mass * mag;
                 bodies[j].vy += dy * iBody.mass * mag;
                 bodies[j].vz += dz * iBody.mass * mag;
+                j+=1;
             }
+            i+=1;
         }
 
-        for(int i=0; i < bodies.size; ++i) {
+        //for(int i=0; i < bodies.size; ++i) {
+        int i=0; while(i<bodies.size) {
             Body body = bodies[i];
             body.x += dt * body.vx;
             body.y += dt * body.vy;
             body.z += dt * body.vz;
+            i+=1;
         }
     }
 
-    double energy(){
-        double dx, dy, dz, distance;
-        double e = 0.0;
+    float energy(){
+        float dx, dy, dz, distance;
+        float e = 0.0;
 
-        for (int i=0; i < bodies.size; ++i) {
+        //for (int i=0; i < bodies.size; ++i) {
+        int i=0; while(i<bodies.size) {
             Body iBody = bodies[i];
             e += (0.5 * iBody.mass * ( iBody.vx * iBody.vx + iBody.vy * iBody.vy + iBody.vz * iBody.vz ));
 
-            for (int j=i+1; j < bodies.size; ++j) {
+            //for (int j=i+1; j < bodies.size; ++j) {
+            int j=i+1; while(j<bodies.size) {
                 Body jBody = bodies[j];
                 dx = iBody.x - jBody.x;
                 dy = iBody.y - jBody.y;
@@ -138,29 +149,25 @@ class NBodySystem {
 
                 distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
                 e -= (iBody.mass * jBody.mass) / distance;
+                j+=1;
             }
+            i+=1;
         }
         return e;
     }
 }
 
-class NbodyBench extends BenchMarkTask {
-    NbodyBench() {
-        this.name = "NBody";
+void run() {
+    int n = 50000000;
+    NBodySystem bodies = new NBodySystem();
+    System.out.println("energy:"+ bodies.energy());
+    //for (int i = 0; i < n; i++) {
+    int i=0; while(i<n) {
+        bodies.advance(0.01);
+        i+=1;
     }
-    @Override void run() {
-        int n = 50000000;
-        NBodySystem bodies = new NBodySystem();
-        OUT.println("energy:"+ bodies.energy());
-        for (int i = 0; i < n; i++) {
-            bodies.advance(0.01);
-        }
-        OUT.println("energy:"+ bodies.energy());
-    }
+    System.out.println("energy:"+ bodies.energy());
 }
 
-void main (String[] args) {
-    Benchmark bm = new Benchmark(1);
-    bm.addTask(new NbodyBench());
-    bm.run();
-}
+run();
+

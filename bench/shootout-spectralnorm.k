@@ -4,77 +4,89 @@
  *
  */
 
-using konoha.math.*;
-include "_bench.k";
-N=5500;
+K.import("konoha");
+K.import("konoha.io");
+K.import("konoha.math");
+int N=5500;
 
 class Spectralnorm {
     /* return element i,j of infinite matrix A */
-    double a(int i, int j){
+    float a(int i, int j){
         return 1.0/((i+j)*(i+j+1)/2 +i+1);
     }
 
     /* multiply vector v by matrix A */
-    void multiplyAv(int n, double[] v, double[] av){
-        for (int i=0; i<n; i++){
+    void multiplyAv(int n, float[] v, float[] av){
+        int i=0; while(i<n) { 
             av[i] = 0;
-            for (int j=0; j<n; j++) av[i] += a(i,j)*v[j];
+            //for (int j=0; j<n; j+=1) av[i] += a(i,j)*v[j];
+            int j=0; while(j<n) { 
+              av[i] += a(i,j)*v[j];
+              j+=1;
+            }
+            i+=1;
         }
     }
 
     /* multiply vector v by matrix A transposed */
-    void multiplyAtv(int n, double[] v, double[] atv){
-        for (int i=0;i<n;i++){
+    void multiplyAtv(int n, float[] v, float[] atv){
+        int i=0; while(i<n) {
             atv[i] = 0;
-            for (int j=0; j<n; j++) atv[i] += a(j,i)*v[j];
+            //for (int j=0; j<n; j+=1) atv[i] += a(j,i)*v[j];
+            int j=0; while(j<n) {
+              atv[i] += a(j,i)*v[j];
+              j+=1;
+            }
+            i+=1;
         }
     }
 
     /* multiply vector v by matrix A and then by matrix A transposed */
-    void multiplyAtAv(int n, double[] v, double[] atAv){
-        double[] u = new double[n];
-        multiplyAv(n,v,u);
-        multiplyAtv(n,u,atAv);
+    void multiplyAtAv(int n, float[] v, float[] atAv){
+        float[] u = new float[n];
+        multiplyAv(n, v, u);
+        multiplyAtv(n, u, atAv);
     }
 
-    double approximate(int n) {
+    float approximate(int n) {
         // create unit vector
-        double[] u = new double[n];
-        for (int i=0; i<n; i++) u[i] =  1;
+        float[] u = new float[n];
+        //for (int i=0; i<n; i+=1) u[i] =  1;
+        int i=0; while(i<n) { 
+          u[i] = 1; i+=1;
+        }
 
         // 20 steps of the power method
-        double[] v = new double[n];
-        for (int i=0; i<n; i++) v[i] = 0;
+        float[] v = new float[n];
+        //for (int i=0; i<n; i+=1) v[i] = 0;
+        int i=0; while(i<n) { 
+          v[i]=0; i+=1;
+        }
 
-        for (int i=0; i<10; i++) {
-            multiplyAtAv(n,u,v);
-            multiplyAtAv(n,v,u);
+        int i=0; while( i<10) { 
+            multiplyAtAv(n, u, v);
+            multiplyAtAv(n, v, u);
+            i+=1;
         }
 
         // B=AtA         A multiplied by A transposed
         // v.Bv /(v.v)   eigenvalue of v
-        double vBv = 0, vv = 0;
-        for (int i=0; i<n; i++) {
+        float vBv = 0, vv = 0;
+        int i=0; while( i<n) { 
             vBv += u[i]*v[i];
             vv  += v[i]*v[i];
+            i+=1;
         }
         return Math.sqrt(vBv/vv);
     }
 }
 
-class SpectralnormBench extends BenchMarkTask {
-    SpectralnormBench() {
-        this.name = "Spectralnorm";
-    }
-    @Override void run() {
-        int n = N;
-        float res = new Spectralnorm().approximate(n);
-        System.out.println(res.format("%0.9f"));
-    }
+void run() {
+    int n = N;
+    Spectralnorm s = new Spectralnorm();
+    float res = s.approximate(n);
+    System.out.println("" + res);
 }
 
-void main (String[] args) {
-    Benchmark bm = new Benchmark(1);
-    bm.addTask(new SpectralnormBench());
-    bm.run();
-}
+run();
+

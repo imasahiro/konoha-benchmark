@@ -4,10 +4,11 @@
  *
  */
 
-using konoha.math.*;
-include "_bench.k";
-N=12;
-static int max(int a, int b) {
+K.import("konoha");
+K.import("konoha.io");
+
+int N=12;
+int max(int a, int b) {
     if (a > b) {
         return a;
     }
@@ -24,32 +25,42 @@ int fannkuch(int n) {
     int permCount = 0;
     int checksum = 0;
 
-    for(int i=0; i<n; i++) { perm1[i] = i; }
+    //for(int i=0; i<n; i++) { perm1[i] = i; }
+    int i=0; while(i<n) { perm1[i] = i; i+=1; }
     int r = n;
 
     while (true) {
 
-        while (r != 1) { count[r-1] = r; r--; }
+        while (r != 1) { count[r-1] = r; r-=1; }
 
-        for(int i=0; i<n; i++) { perm[i] = perm1[i]; }
+        //for(int i=0; i<n; i++) { perm[i] = perm1[i]; }
+        i=0; while(i<n) { perm[i] = perm1[i]; i+=1; }
+
         int flipsCount = 0;
         int k;
 
         while ( !((k=perm[0]) == 0) ) {
             int k2 = (k+1) >> 1;
-            for(int i=0; i<k2; i++) {
+            //for(int i=0; i<k2; i++) {
+            i=0; while(i<k2) {
                 int temp = perm[i]; perm[i] = perm[k-i]; perm[k-i] = temp;
+                i+=1;
             }
-            flipsCount++;
+            flipsCount+=1;
         }
 
         maxFlipsCount = max(maxFlipsCount, flipsCount);
-        checksum = checksum + ((permCount%2 == 0) ? flipsCount : -flipsCount);
+        //checksum = checksum + ((permCount%2 == 0) ? flipsCount : -flipsCount);
+        if(permCount%2 == 0) {
+          checksum += flipsCount;
+        } else {
+          checksum += -flipsCount;
+        }
 
         // Use incremental change to generate another permutation
         while (true) {
             if (r == n) {
-                System.out.println( checksum );
+                System.out.println(""+checksum);
                 return maxFlipsCount;
             }
             int perm0 = perm1[0];
@@ -63,26 +74,18 @@ int fannkuch(int n) {
 
             count[r] = count[r] - 1;
             if (count[r] > 0) break;
-            r++;
+            r+=1;
         }
 
-        permCount++;
+        permCount+=1;
     }
     return 0;
 }
 
-class Fannkuch extends BenchMarkTask {
-    Fannkuch() {
-        this.name = "fannkuch";
-    }
-    @Override void run() {
-        int n = N;
-        System.out.println("Pfannkuchen("+n+") = "+fannkuch(n));
-    }
+void run() {
+    int n = N;
+    System.out.println("Pfannkuchen("+n+") = "+fannkuch(n));
 }
 
-void main (String[] args) {
-    Benchmark bm = new Benchmark(1);
-    bm.addTask(new Fannkuch());
-    bm.run();
-}
+run();
+

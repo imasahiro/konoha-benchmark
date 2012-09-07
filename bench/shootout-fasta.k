@@ -4,21 +4,33 @@
  *
  */
 
-include "_bench.k";
-N=25000000;
+K.import("konoha");
+K.import("konoha.io");
+K.import("konoha.bytes");
 
-ALU = "GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGG" + 
+int N=25000000;
+String EOL = "\n";
+
+void OutputStream.write(Bytes b, int begin, int end) {
+  int i=begin;
+  while(i < end) {
+    this.putByte(b.get(i));
+    i += 1;
+  }
+}
+
+ALU = ("GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGG" + 
  "GAGGCCGAGGCGGGCGGATCACCTGAGGTCAGGAGTTCGAGA" +
  "CCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACTAAAAAT" +
  "ACAAAAATTAGCCGGGCGTGGTGGCGCGCGCCTGTAATCCCA" +
  "GCTACTCGGGAGGCTGAGGCAGGAGAATCGCTTGAACCCGGG" +
  "AGGCGGAGGTTGCAGTGAGCCGAGATCGCGCCACTGCACTCC" +
- "AGCCTGGGCGACAGAGCGAGACTCCGTCTCAAAAA";
+ "AGCCTGGGCGACAGAGCGAGACTCCGTCTCAAAAA");
 
 class Frequency {
     int c;
-    double p;
-    Frequency(int c, double p) {
+    float p;
+    Frequency(int c, float p) {
         this.c = c;
         this.p = p;
     }
@@ -46,61 +58,63 @@ Frequency[] homosapiens = [
     new Frequency('g', 0.1975473066391),
     new Frequency('t', 0.3015094502008)];
 
-IM = 139968;
-IA = 3877;
-IC = 29573;
+int IM=139968;
+int IA=3877;
+int IC=29573;
 
-LINE_LENGTH = 60;
-BUFFER_SIZE = 1024;
+int LINE_LENGTH=60;
+int BUFFER_SIZE=1024;
 
 // pseudo-random number generator
 int last = 42;
-double random(double max) {
+float random(float max) {
     last = (last * IA + IC) % IM;
     return max * last / IM;
 }
 
-byte[] alub = ALU.encode();
+Bytes alub = ALU.asBytes();
 
 void makeCumulative(Frequency[] a) {
-    double cp = 0.0;
-    for (int i = 0; i < a.size; i++) {
+    float cp = 0.0;
+    int i = 0; while(i < a.size) {
         cp += a[i].p;
         a[i].p = cp;
+        i+=1;
     }
 }
 
 // naive
 int selectRandom(Frequency[] a) {
     int len = a.size;
-    double r = random(1.0);
-    for (int i = 0; i < len; i++) {
+    float r = random(1.0);
+    int i = 0; while(i < len) {
         if (r < a[i].p) {
             return a[i].c;
         }
+        i+=1;
     }
     return a[len - 1].c;
 }
 
 int index = 0;
-byte[] bbuffer = new byte[BUFFER_SIZE];
+Bytes bbuffer = new Bytes(BUFFER_SIZE);
 void makeRandomFasta(String id, String desc,Frequency[] a, int n, OutputStream writer) {
     index = 0;
     int m = 0;
     String descStr = ">" + id + " " + desc + EOL;
-    writer.write(descStr.encode());
+    writer.print(descStr);
     while (n > 0) {
         if (n < LINE_LENGTH) { m = n; } else { m = LINE_LENGTH; }
         if(BUFFER_SIZE - index < m){
             writer.write(bbuffer, 0, index);
             index = 0;
         }
-        for (int i = 0; i < m; i++) {
+        int i = 0; while(i < m) { i+=1;
             bbuffer[index] = selectRandom(a);
-            index++;
+            index+=1;
         }
-        bbuffer[index] = '\n';
-        index++;
+        bbuffer[index] = "\n".asBytes()[0];
+        index+=1;
         n -= LINE_LENGTH;
     }
     if(index != 0) writer.write(bbuffer, 0, index);
@@ -112,44 +126,36 @@ void makeRepeatFasta(String id, String desc, String alu, int n, OutputStream wri
     int k = 0;
     int kn = alub.size;
     String descStr = ">" + id + " " + desc + EOL;
-    writer.write(descStr.encode());
+    writer.print(descStr);
     while (n > 0) {
         if (n < LINE_LENGTH) { m = n; } else { m = LINE_LENGTH; }
         if(BUFFER_SIZE - index < m) {
             writer.write(bbuffer, 0, index);
             index = 0;
         }
-        for (int i = 0; i < m; i++) {
+        int i = 0; while(i < m) { i+=1;
             if (k == kn) { k = 0; }
             bbuffer[index] = alub[k];
-            index++;
-            k++;
+            index+=1;
+            k+=1;
         }
-        bbuffer[index] = '\n';
-        index++;
+        bbuffer[index] = "\n".asBytes()[0];
+        index+=1;
         n -= LINE_LENGTH;
     }
     if(index != 0) writer.write(bbuffer, 0, index);
 }
 
-class Fasta extends BenchMarkTask {
-    Fasta() {
-        this.name = "Fasta";
-    }
-    @Override void run() {
-        int n = N;
-        makeCumulative(homosapiens);
-        makeCumulative(iub);
-        OutputStream out = new OutputStream("tmp.fasta");
-        makeRepeatFasta("ONE", "Homo sapiens alu", ALU, n * 2, out);
-        makeRandomFasta("TWO", "IUB ambiguity codes", iub, n * 3, out);
-        makeRandomFasta("THREE", "Homo sapiens frequency", homosapiens, n * 5, out);
-        out.close();
-    }
+void run() {
+    int n = N;
+    makeCumulative(homosapiens);
+    makeCumulative(iub);
+    OutputStream out = new OutputStream("tmp.fasta", "w");
+    makeRepeatFasta("ONE", "Homo sapiens alu", ALU, n * 2, out);
+    makeRandomFasta("TWO", "IUB ambiguity codes", iub, n * 3, out);
+    makeRandomFasta("THREE", "Homo sapiens frequency", homosapiens, n * 5, out);
+    out.close();
 }
 
-void main (String[] args) {
-    Benchmark bm = new Benchmark(1);
-    bm.addTask(new Fasta());
-    bm.run();
-}
+run();
+
