@@ -13,7 +13,7 @@ int LINE_LENGTH=60;
 int OUT_BUFFER_SIZE = 256*1024;
 int LOOKUP_SIZE = 4*1024;
 float LOOKUP_SCALE = (LOOKUP_SIZE - 1) * 1.0;
-int N=25000000;
+int N=2500000;
 
 void OutputStream.write(Bytes b, int begin, int end) {
   int i=begin;
@@ -154,7 +154,7 @@ class RandomFasta {
             ous.buf[lct] = lookup[ai].c;
             lct+=1;
         }
-        ous.buf[lct] = '\n';
+        ous.buf[lct] = "\n".asBytes()[0];
         lct+=1;
         ous.ct=lct;
     }
@@ -162,7 +162,7 @@ class RandomFasta {
     void make(String desc, Freq[] a, int n) {
         int nn = n;
         makeLookup(a);
-        arraycopy(desc.encode(), 0, ous.buf, ous.ct, desc.size);
+        arraycopy(desc.asBytes(), 0, ous.buf, ous.ct, desc.size);
         ous.ct+=desc.size;
 
         while (nn > 0) {
