@@ -1,12 +1,13 @@
 /*
  * scimark2 MonteCarlo bench
  */
-using konoha.math.*;
-include "./scimark/scimarkutil/Constants.k";
-include "./scimark/scimarkutil/Random.k";
-include "_bench.k";
-//package jnt.scimark2;
-//include "scimarkutil/Random.k";
+K.import("konoha.class");
+K.import("konoha.assign");
+K.import("konoha.float");
+K.import("konoha.while");
+K.import("konoha.math")
+//include "./scimark/scimarkutil/Constants.k";
+//include "./scimark/scimarkutil/Random.k";
 /**
  * Estimate Pi by approximating the area of a circle.
  * 
@@ -36,45 +37,36 @@ include "_bench.k";
  * 
  */
 
-SEED = 113;
-public class MonteCarlo
-{
+class MonteCarlo {
 
-    public static final double num_flops(int num_samples)
-    {
-        // 3 flops in x^2+y^2 and 1 flop in random routine
-        return ((double) num_samples)* 4.0;
+	float num_flops(int num_samples) {
+		// 3 flops in x^2+y^2 and 1 flop in random routine
+		return (num_samples).tofloat() * 4.0;
 
-    }
+	}
 
-    public static final double integrate(int num_samples) {
+	float integrate(int num_samples) {
 
-        Random r = new Random(SEED);
-        int under_curve = 0;
-        for (int count=0; count<num_samples; count++) {
-            double x= r.nextDouble();
-            double y= r.nextDouble();
-            if ( x*x + y*y <= 1.0) {
-                under_curve ++;
-            }
-        }
+		int under_curve = 0;
 
-        return ((double) under_curve / num_samples) * 4.0;
-    }
+		int count = 0;
+		while (count < num_samples) {
+			float x= Math.random();
+			float y= Math.random();
+			if ( x*x + y*y <= 1.0) {
+				under_curve += 1;
+			}
+			count += 1;
+		}
+
+		return (under_curve.tofloat() / num_samples) * 4.0;
+	}
 }
 
-class Bench1 extends BenchMarkTask {
-    Bench1() {
-        this.name = "MonteCarlo";
-    }
-    @Override void run() {
-        Random r = new Random(RANDOM_SEED);
-        OUT.println(MonteCarlo.integrate(15_000_000));
-    }
+class Bench1 {
+	void run() {
+		System.p(MonteCarlo.integrate(15000000));
+	}
 }
 
-void main (String[] args) {
-    Benchmark bm = new Benchmark(1);
-    bm.addTask new Bench1();
-    bm.run();
-}
+new Bench1().run();
