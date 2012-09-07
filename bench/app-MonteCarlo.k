@@ -6,8 +6,8 @@ K.import("konoha.assign");
 K.import("konoha.float");
 K.import("konoha.while");
 K.import("konoha.math")
-//include "./scimark/scimarkutil/Constants.k";
-//include "./scimark/scimarkutil/Random.k";
+K.load("../scimark/scimarkutil/Constants.k");
+K.load("../scimark/scimarkutil/Random.k");
 /**
  * Estimate Pi by approximating the area of a circle.
  * 
@@ -36,7 +36,7 @@ K.import("konoha.math")
  * </pre>
  * 
  */
-
+SEED = 113;
 class MonteCarlo {
 
 	float num_flops(int num_samples) {
@@ -47,24 +47,25 @@ class MonteCarlo {
 
 	float integrate(int num_samples) {
 
+		Random r = new Random(SEED);
 		int under_curve = 0;
 
 		int count = 0;
 		while (count < num_samples) {
-			float x= Math.random();
-			float y= Math.random();
+			float x= r.nextDouble();
+			float y= r.nextDouble();
 			if ( x*x + y*y <= 1.0) {
 				under_curve += 1;
 			}
 			count += 1;
 		}
-
 		return (under_curve.tofloat() / num_samples) * 4.0;
 	}
 }
 
 class Bench1 {
 	void run() {
+		Random r = new Random(RANDOM_SEED);
 		System.p(MonteCarlo.integrate(15000000));
 	}
 }

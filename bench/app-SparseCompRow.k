@@ -3,9 +3,8 @@
  */
 K.import("konoha");
 K.import("konoha.math");
-
-SPARSE_SIZE_M = 1000;
-SPARSE_SIZE_NZ = 5000;
+K.load("../scimark/scimarkutil/Constants.k");
+K.load("../scimark/scimarkutil/Random.k");
 
 class SparseCompRow {
 	/* multiple iterations used to make kernel have roughly
@@ -37,7 +36,7 @@ class SparseCompRow {
 
 			int r = 0;
 			while (r < m) {
-				float sum = 0.0; 
+				float sum = 0.0;
 				int rowR = row[r];
 				int rowRp1 = row[r+1];
 				int i = rowR;
@@ -54,11 +53,11 @@ class SparseCompRow {
 
 }
 
-Array[float] randomVector(int n) {
+Array[float] randomVector(int n, Random r) {
 	Array[float] a = new float[n];
 	int i = 0;
 	while (i < n) {
-		a[i] = Math.random();
+		a[i] = r.nextDouble();
 		i += 1;
 	}
 	return a;
@@ -70,8 +69,8 @@ class Bench1 {
 		int nz = SPARSE_SIZE_NZ;
 		// initialize vector multipliers and storage for result
 		// y = A*y;
-
-		Array[float] x = randomVector(n);
+		Random r = new Random(RANDOM_SEED);
+		Array[float] x = randomVector(n,r);
 		Array[float] y = new float[n];
 
 		// initialize square sparse matrix
@@ -88,7 +87,7 @@ class Bench1 {
 		//             +**  *   *        +
 		//             +* *   *   *      +
 		//             +*  *   *    *    +
-		//             +*   *    *    *  + 
+		//             +*   *    *    *  +
 		//             +-----------------+
 		//
 		// (as best reproducible with integer artihmetic)
@@ -98,7 +97,7 @@ class Bench1 {
 		int nr = nz/n; 		// average number of nonzeros per row
 		int anz = nr *n;   // _actual_ number of nonzeros
 
-		Array[float] val = randomVector(anz);
+		Array[float] val = randomVector(anz,r);
 		Array[int] col = new int[anz];
 		Array[int] row = new int[n+1];
 
