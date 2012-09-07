@@ -1,7 +1,8 @@
 /*
  * tarai 12 6 0
  */
-include "_bench.k";
+K.import("konoha.class");
+
 int tarai(int x, int y, int z) {
 	if (y >= x) {
 		return y;
@@ -13,17 +14,10 @@ int tarai(int x, int y, int z) {
 	}
 }
 
-class BenchTarai extends BenchMarkTask {
-	BenchTarai() {
-		this.name = "tarai";
-	}
-	@Override void run() {
-		OUT.println(tarai(12, 6, 0));
+class BenchTarai {
+	void run() {
+		System.p(tarai(12, 6, 0));
 	}
 }
 
-void main (String[] args) {
-    Benchmark bm = new Benchmark(1);
-    bm.addTask new BenchTarai();
-    bm.run();
-}
+new BenchTarai().run();
