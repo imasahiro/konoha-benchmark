@@ -3,7 +3,7 @@
  * see http://lua-users.org/lists/lua-l/2010-02/msg00323.html
  */
 
-include "_bench.k";
+
 N=10000000;
 
 // these are the opcodes for the interpreted language
@@ -13,6 +13,9 @@ MOV_R_A    = 3;
 ADD_R_TO_A = 4;
 DECR_A     = 5;
 RETURN_A   = 6;
+
+K.import("konoha.while");
+K.import("konoha.assign");
 
 // the main interpreter loop
 int interpret(Int[] bytecode, int a) {
@@ -55,7 +58,9 @@ int interpret(Int[] bytecode, int a) {
     return 0;
 }
 
-class Bench1 extends BenchMarkTask {
+K.import("konoha.class");
+
+class Bench1 {
     Bench1() {
         this.name = "toy interpreter N="+N;
     }
