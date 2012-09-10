@@ -9,7 +9,7 @@
  * based on the Java implementation by Mario Wolczko.
  */
 
-include "_bench.k";
+K.import("konoha")
 
 /* 
    Strengths are used to measure the relative importance of constraints.
@@ -107,22 +107,22 @@ class Constraint {
     @Overload void init(Strength strength) {
         this.strength= strength;
     }
-    @Virtual boolean isSatisfied();
-    @Virtual void markUnsatisfied();
-    @Virtual boolean isInput() { return false; }
+    @Public @Virtual boolean isSatisfied();
+    @Public @Virtual void markUnsatisfied();
+    @Public @Virtual boolean isInput() { return false; }
     void addConstraint();
     void destroyConstraint();
-    @Virtual void addToGraph();
-    @Virtual void removeFromGraph();
-    @Virtual void chooseMethod(int mark);
-    @Virtual void markInputs(int mark);
-    @Virtual boolean inputsKnown(int mark);
-    @Virtual Variable output();
+    @Public @Virtual void addToGraph();
+    @Public @Virtual void removeFromGraph();
+    @Public @Virtual void chooseMethod(int mark);
+    @Public @Virtual void markInputs(int mark);
+    @Public @Virtual boolean inputsKnown(int mark);
+    @Public @Virtual Variable output();
 
     Constraint satisfy(int mark);
-    @Virtual void execute();
-    @Virtual void recalculate();
-    @Virtual void printInputs();
+    @Public @Virtual void execute();
+    @Public @Virtual void recalculate();
+    @Public @Virtual void printInputs();
     void printOutput() { output().print(); }
     void print_() {
         int i, outIndex;
@@ -490,7 +490,7 @@ class UnaryConstraint extends Constraint {
     Variable output() { return myOutput; }
 
     // Add myself to the constraint graph.
-    @Virtual @Override void addToGraph()
+    @Public @Virtual @Override void addToGraph()
     {
         myOutput.addConstraint(this);
         satisfied= false;
@@ -597,7 +597,7 @@ class BinaryConstraint extends Constraint {
         direction= nodirection;
     }
     // Add myself to the constraint graph.
-    @Virtual @Override void addToGraph()
+    @Public @Virtual @Override void addToGraph()
     {
         //FIXME
         addToGraph_BinaryConstraint();
@@ -609,7 +609,7 @@ class BinaryConstraint extends Constraint {
         direction= nodirection;
     }
     // Remove myself from the constraint graph.
-    @Virtual @Override void removeFromGraph()
+    @Public @Virtual @Override void removeFromGraph()
     {
         //FIXME
         removeFromGraph_BinaryConstraint()
@@ -657,7 +657,7 @@ class BinaryConstraint extends Constraint {
         input().mark= mark;
     }
     // Mark the input variable with the given mark.
-    @Virtual @Override void markInputs(int mark)
+    @Public @Virtual @Override void markInputs(int mark)
     {
         //FIXME
         markInputs_BinaryConstraint(mark);
@@ -679,7 +679,7 @@ class BinaryConstraint extends Constraint {
     // 'stay', the value for the current output of this
     // constraint. Assume this constraint is satisfied.
     //
-    @Virtual @Override void recalculate()
+    @Public @Virtual @Override void recalculate()
     {
         Variable in= input(), out= output();
         out.walkStrength= Strength.weakestOf(strength, in.walkStrength);
@@ -791,7 +791,7 @@ class ScaleConstraint extends BinaryConstraint {
 
 //------------------------------------------------------------
 
-class DeltaBlue extends BenchMarkTask {
+class DeltaBlue {
     DeltaBlue() {
         this.name = "DeltaBlue";
     }
