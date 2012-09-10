@@ -1,8 +1,10 @@
 /**
  * quicksort
  */
-include "_bench.k";
-N=1024 * 1024 * 2;
+
+//N=1024 * 1024 * 2;
+N = 10;
+
 /*
  * The Original Code is 
  * Copyright (C) 2002 Lorenzo Allegrucci (lenstra@tiscalinet.it)
@@ -11,13 +13,22 @@ N=1024 * 1024 * 2;
  * Ported to Konoha by Masahiro Ide.
  */
 
+K.import("konoha");
+K.import("konoha.int");
+K.import("konoha.string");
+K.import("konoha.array");
+K.import("konoha.class");
+K.import("konoha.while");
+K.import("konoha.assign");
+K.import("konoha.io");
+
 VERBOSE = false;
 
 /**
  * quick_sort - Sort in the range [l, r]
  */
-void quick_sort(String[] a, int l, int r)
-{
+void quick_sort(String[] a, int l, int r) {
+
     String p, tmp, min, max;
 
     int i = l;
@@ -65,51 +76,55 @@ void quick_sort(String[] a, int l, int r)
 }
 
 
-void do_qsort(int n, int s)
-{
+void do_qsort(int n, int s) {
+
     int errors = 0;
-    int i;
+    int i = 0;
     String[] a = new String[n];
 
-    System.setRandomSeed(s);
-    if (VERBOSE)
-        OUT.println("seed = " + s);
+//    System.setRandomSeed(s);
+    if (VERBOSE) {
+        System.p("seed = " + s);
+	}
 
-    for (i = 0; i < n; i++) {
-        a[i] = (String) Int.random();
-    }
+	// while(i < n) {
+    //     a[i] = (String) Int.random();
+	// 	i=i+1;
+    // }
 
     if (VERBOSE) {
-        OUT.println("sorting... ");
+        System.p("sorting... ");
     }
+
     quick_sort(a, 0, n - 1);
+
     if (VERBOSE) {
-        OUT.println("done.");
+        System.p("done.");
     }
 
     if (VERBOSE) {
-        OUT.println("verify... ");
+        System.p("verify... ");
     }
-    for (i = 0; i < n - 1; i++) {
+	i=0;
+	while(i < n-1) {
         if (a[i] > a[i + 1]) {
             errors++;
             ERR.println("ERROR: i = "+i);
         }
+		i=i+1;
     }
     if (VERBOSE) {
-        OUT.println("done.");
+        System.p("done.");
     }
 
     if (errors > 0) {
-        OUT.println(" *** WARNING ***  " + errors + " errors.");
+        System.p(" *** WARNING ***  " + errors + " errors.");
     }
 }
 
-class Sort extends BenchMarkTask {
-    Sort() {
-        this.name = "quicksort";
-    }
-    @Override void run() {
+class Sort {
+    Sort() {}
+    void run() {
         int nr_elems = N;
         int seed     = 140175100;
         //print nr_elems, seed;
@@ -117,8 +132,4 @@ class Sort extends BenchMarkTask {
     }
 }
 
-void main (String[] args) {
-    Benchmark bm = new Benchmark(1);
-    bm.addTask new Sort();
-    bm.run();
-}
+new Sort().run();
