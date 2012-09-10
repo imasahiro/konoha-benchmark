@@ -1,116 +1,136 @@
 /*
  * access global variable
  */
-include "_bench.k";
-N=1_000_000;
-Int     a = 10;
-Float   b = 10.0;
-boolean c = true;
-String  d = "10";
-Object  e = new OutputStream();;
+N=10000;
 
-class Bench1 extends BenchMarkTask {
-	Bench1() {
-		this.name = "global assign:int const";
-	}
-	@Override void run() {
-		for (int i=0; i < N; i++) {
-			a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1;
-			a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1;
-			a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1;
-			a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1;
-			a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1;
-			a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1;
-			a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1;
-			a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1;
-			a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1;
-			a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1; a=1;
-		}
-	}
+K.import("konoha");
+K.import("konoha.int");
+K.import("konoha.float");
+K.import("konoha.string");
+K.import("konoha.class");
+K.import("konoha.while");
+K.import("konoha.assign");
+K.import("konoha.io");
+
+class A {
+    int     a;
+    float   b;
+    boolean c;
+    String  d;
+    OutputStream  e;
+    A() {
+        a = 10;
+        b = 10.0;
+        c = true;
+        d = "10";
+        e = new OutputStream("tmp.fasta","w");
+    }
 }
-class Bench2 extends BenchMarkTask {
-	Bench2() {
-		this.name = "global assign:float const";
-	}
-	@Override void run() {
-		for (int i=0; i < N; i++) {
-			b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1;
-			b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1;
-			b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1;
-			b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1;
-			b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1;
-			b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1;
-			b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1;
-			b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1;
-			b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1;
-			b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1; b=1;
-		}
-	}
-}
-class Bench3 extends BenchMarkTask {
-	Bench3() {
-		this.name = "global assign:boolean const";
-	}
-	@Override void run() {
-		for (int i=0; i < N; i++) {
-			c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false;
-			c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false;
-			c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false;
-			c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false;
-			c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false;
-			c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false;
-			c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false;
-			c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false;
-			c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false;
-			c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false;
-		}
-	}
-}
-class Bench4 extends BenchMarkTask {
-	Bench4() {
-		this.name = "global assign:string const";
-	}
-	@Override void run() {
-		for (int i=0; i < N; i++) {
-			d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a";
-			d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a";
-			d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a";
-			d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a";
-			d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a";
-			d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a";
-			d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a";
-			d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a";
-			d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a";
-			d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a";
-		}
-	}
-}
-class Bench5 extends BenchMarkTask {
-	Bench5() {
-		this.name = "global assign:object";
-	}
-	@Override void run() {
-		for (int i=0; i < N; i++) {
-			e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e;
-			e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e;
-			e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e;
-			e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e;
-			e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e;
-			e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e;
-			e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e;
-			e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e;
-			e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e;
-			e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e; e=e;
+
+class Bench1 {
+	Bench1() {}
+	void run() {
+        A a = new A();
+		int i=0;	
+		while(i < N) {
+			a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1;
+			a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1;
+			a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1;
+			a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1;
+			a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1;
+			a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1;
+			a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1;
+			a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1;
+			a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1;
+			a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1;
+			i=i+1;
 		}
 	}
 }
 
-void main (String[] args) {
-    Benchmark bm = new Benchmark(1);
-    bm.addTask new Bench1();
-    bm.addTask new Bench2();
-    bm.addTask new Bench3();
-    bm.addTask new Bench4();
-    bm.addTask new Bench5();
-    bm.run();
+class Bench2 {
+	Bench2() {}
+	void run() {
+        A a = new A();
+		int i=0;	
+		while(i < N) {
+			a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1;
+			a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1;
+			a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1;
+			a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1;
+			a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1;
+			a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1;
+			a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1;
+			a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1;
+			a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1;
+			a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1;
+			i=i+1;
+		}
+	}
 }
+class Bench3 {
+	Bench3() {}
+	void run() {
+        A a = new A();
+		int i=0;	
+		while(i < N) {
+			a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false;
+			a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false;
+			a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false;
+			a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false;
+			a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false;
+			a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false;
+			a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false;
+			a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false;
+			a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false;
+			a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false;
+			i=i+1;
+		}
+	}
+}
+class Bench4 {
+	Bench4() {}
+	void run() {
+        A a = new A();
+		int i=0;	
+		while(i < N) {
+			a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a";
+			a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a";
+			a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a";
+			a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a";
+			a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a";
+			a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a";
+			a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a";
+			a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a";
+			a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a";
+			a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a";
+			i=i+1;
+		}
+	}
+}
+class Bench5 {
+	Bench5() {}
+	void run() {
+        A a = new A();
+		int i=0;	
+		while(i < N) {
+			a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e;
+			a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e;
+			a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e;
+			a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e;
+			a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e;
+			a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e;
+			a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e;
+			a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e;
+			a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e;
+			a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e;
+			i=i+1;
+		}
+	}
+}
+
+new Bench1().run();
+new Bench2().run();
+new Bench3().run();
+new Bench4().run();
+new Bench5().run();
