@@ -8,8 +8,8 @@ K.import("konoha");
 K.import("konoha.io");
 K.import("konoha.bytes");
 
-N=25000; /*25000000*/
-EOL = "\n";
+const N=25000; /*25000000*/
+const EOL = "\n";
 
 void OutputStream.write(Bytes b, int begin, int end) {
   int i=begin;
@@ -58,12 +58,12 @@ Frequency[] homosapiens = [
     new Frequency('g', 0.1975473066391),
     new Frequency('t', 0.3015094502008)];
 
-IM=139968;
-IA=3877;
-IC=29573;
+const IM=139968;
+const IA=3877;
+const IC=29573;
 
-LINE_LENGTH=60;
-BUFFER_SIZE=1024;
+const LINE_LENGTH=60;
+const BUFFER_SIZE=1024;
 
 // pseudo-random number generator
 int last = 42;

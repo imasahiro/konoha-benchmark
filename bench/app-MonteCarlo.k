@@ -6,6 +6,7 @@ K.import("konoha.assign");
 K.import("konoha.float");
 K.import("konoha.while");
 K.import("konoha.math")
+K.import("konoha.const")
 K.load("../scimark/scimarkutil/Constants.k");
 K.load("../scimark/scimarkutil/Random.k");
 /**
@@ -36,7 +37,7 @@ K.load("../scimark/scimarkutil/Random.k");
  * </pre>
  * 
  */
-SEED = 113;
+const SEED = 113;
 class MonteCarlo {
 
 	float num_flops(int num_samples) {

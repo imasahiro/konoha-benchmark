@@ -113,7 +113,7 @@ class FFT {
 			k *= 2;
 		}
 		//if (n != (1 << log))
-		//    throw new Error("FFT: Data length is not a power of 2!: "+n);
+	//    throw new Error("FFT: Data length is not a power of 2!: "+n);
 		return log;
 	}
 

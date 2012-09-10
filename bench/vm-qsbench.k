@@ -29,107 +29,110 @@ VERBOSE = false;
  */
 void quick_sort(String[] a, int l, int r) {
 
-    String p, tmp, min, max;
+	String p, tmp, min, max;
 
-    int i = l;
-    int j = r;
-    int m = (l + r) / 2;
+	int i = l;
+	int j = r;
+	int m = (l + r) / 2;
 
-    if (a[m] >= a[l]) {
-        max = a[m];
-        min = a[l];
-    } else {
-        max = a[l];
-        min = a[m];
-    }
+	if (a[m] >= a[l]) {
+		max = a[m];
+		min = a[l];
+	} else {
+		max = a[l];
+		min = a[m];
+	}
 
-    if (a[r] >= max) {
-        p = max;
-    }
-    else {
-        if (a[r] >= min)
-            p = a[r];
-        else
-            p = min;
-    }
+	if (a[r] >= max) {
+		p = max;
+	}
+	else {
+		if (a[r] >= min) {
+			p = a[r];
+		} else {
+			p = min;
+		}
+	}
 
-    do {
-        while (a[i] < p)
-            i++;
-        while (p < a[j])
-            j--;
-        if (i <= j) {
-            tmp = a[i];
-            a[i] = a[j];
-            a[j] = tmp;
-            i++;
-            j--;
-        }
-    } while (i <= j);
+	do {
+		while (a[i] < p) {
+			i++;
+		}
+		while (p < a[j]) {
+			j--;
+		}
+		if (i <= j) {
+			tmp = a[i];
+			a[i] = a[j];
+			a[j] = tmp;
+			i++;
+			j--;
+		}
+	} while (i <= j);
 
-    if (l < j) {
-        quick_sort(a, l, j);
-    }
-    if (i < r) {
-        quick_sort(a, i, r);
-    }
+	if (l < j) {
+		quick_sort(a, l, j);
+	}
+	if (i < r) {
+		quick_sort(a, i, r);
+	}
 }
 
 
 void do_qsort(int n, int s) {
 
-    int errors = 0;
-    int i = 0;
-    String[] a = new String[n];
+	int errors = 0;
+	int i = 0;
+	String[] a = new String[n];
 
-//    System.setRandomSeed(s);
-    if (VERBOSE) {
-        System.p("seed = " + s);
+	//System.setRandomSeed(s);
+	if (VERBOSE) {
+		System.p("seed = " + s);
 	}
 
-	// while(i < n) {
-    //     a[i] = (String) Int.random();
-	// 	i=i+1;
-    // }
+	//while(i < n) {
+	//	a[i] = (String) Int.random();
+	//	i=i+1;
+	//}
 
-    if (VERBOSE) {
-        System.p("sorting... ");
-    }
+	if (VERBOSE) {
+		System.p("sorting... ");
+	}
 
-    quick_sort(a, 0, n - 1);
+	quick_sort(a, 0, n - 1);
 
-    if (VERBOSE) {
-        System.p("done.");
-    }
+	if (VERBOSE) {
+		System.p("done.");
+	}
 
-    if (VERBOSE) {
-        System.p("verify... ");
-    }
+	if (VERBOSE) {
+		System.p("verify... ");
+	}
 	i=0;
 	while(i < n-1) {
-        if (a[i] > a[i + 1]) {
-            errors++;
-            ERR.println("ERROR: i = "+i);
-        }
+		if (a[i] > a[i + 1]) {
+			errors++;
+			System.p("ERROR: i = "+i);
+		}
 		i=i+1;
-    }
-    if (VERBOSE) {
-        System.p("done.");
-    }
+	}
+	if (VERBOSE) {
+		System.p("done.");
+	}
 
-    if (errors > 0) {
-        System.p(" *** WARNING ***  " + errors + " errors.");
-    }
+	if (errors > 0) {
+		System.p(" *** WARNING ***  " + errors + " errors.");
+	}
 }
 
 class Sort {
-    Sort() {}
-    void run() {
-        int nr_elems = N;
-        int seed     = 140175100;
-        //print nr_elems, seed;
-        do_qsort(nr_elems, seed);
-    }
+	Sort() {}
+	void run() {
+		int nr_elems = N;
+		int seed     = 140175100;
+		//print nr_elems, seed;
+		do_qsort(nr_elems, seed);
+	}
 }
 
 new Sort().run();

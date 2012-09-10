@@ -10,8 +10,8 @@ K.import("konoha.int");
 K.import("konoha.assign");
 K.import("konoha.io");
 
-MINDEPTH = 4;
-N=14;
+const MINDEPTH = 4;
+const N=14;
 
 class TreeNode {
 	TreeNode left, right;
@@ -50,12 +50,10 @@ void run() {
 	int check = b.itemCheck();
 	System.out.println("stretch tree of depth " + stretchDepth + "\t check: " + check);
 	TreeNode longLivedTree = bottomUpTree(0, maxDepth);
-	//for (int depth = MINDEPTH; depth <= maxDepth; depth += 2) {
 	int depth = MINDEPTH;
 	while (depth <= maxDepth) {
 		int iterations = 1 << (maxDepth - depth + MINDEPTH);
 		check = 0;
-		//for (int i=1; i<= iterations; i++){
 		int i=1;
 		while (i<= iterations){
 			check += bottomUpTree(i, depth).itemCheck();

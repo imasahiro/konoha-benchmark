@@ -13,25 +13,25 @@ K.import("konoha.assign");
 K.import("konoha.io");
 
 class A {
-    int     a;
-    float   b;
-    boolean c;
-    String  d;
-    OutputStream  e;
-    A() {
-        a = 10;
-        b = 10.0;
-        c = true;
-        d = "10";
-        e = new OutputStream("tmp.fasta","w");
-    }
+	int     a;
+	float   b;
+	boolean c;
+	String  d;
+	OutputStream  e;
+	A() {
+		a = 10;
+		b = 10.0;
+		c = true;
+		d = "10";
+		e = new OutputStream("tmp.fasta","w");
+	}
 }
 
 class Bench1 {
 	Bench1() {}
 	void run() {
-        A a = new A();
-		int i=0;	
+		A a = new A();
+		int i=0;
 		while(i < N) {
 			a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1;
 			a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1; a.a=1;
@@ -51,8 +51,8 @@ class Bench1 {
 class Bench2 {
 	Bench2() {}
 	void run() {
-        A a = new A();
-		int i=0;	
+		A a = new A();
+		int i=0;
 		while(i < N) {
 			a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1;
 			a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1;
@@ -71,8 +71,8 @@ class Bench2 {
 class Bench3 {
 	Bench3() {}
 	void run() {
-        A a = new A();
-		int i=0;	
+		A a = new A();
+		int i=0;
 		while(i < N) {
 			a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false;
 			a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false; a.c=true; a.c=false;
@@ -91,8 +91,8 @@ class Bench3 {
 class Bench4 {
 	Bench4() {}
 	void run() {
-        A a = new A();
-		int i=0;	
+		A a = new A();
+		int i=0;
 		while(i < N) {
 			a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a";
 			a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a"; a.d="a";
@@ -111,8 +111,8 @@ class Bench4 {
 class Bench5 {
 	Bench5() {}
 	void run() {
-        A a = new A();
-		int i=0;	
+		A a = new A();
+		int i=0;
 		while(i < N) {
 			a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e;
 			a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e;

@@ -7,7 +7,7 @@
 K.import("konoha");
 K.import("konoha.io");
 
-int N=12;
+const N=8;
 int max(int a, int b) {
     if (a > b) {
         return a;

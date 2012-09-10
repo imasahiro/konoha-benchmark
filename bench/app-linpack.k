@@ -49,52 +49,52 @@ K.import("konoha.date");
 //DDfloat = float[][];
 
 class Linpack {
-    float _second_orig;
+	float _second_orig;
 
-    Linpack() {
-        _second_orig = -1;
-    }
+	Linpack() {
+		_second_orig = -1;
+	}
 
-    float second() {
-        if (_second_orig == -1)
-            _second_orig = (float)Date.getTime();
-        return ((float)Date.getTime() - _second_orig) / 1000.0;
-    }
+	float second() {
+		if (_second_orig == -1)
+			_second_orig = (float)Date.getTime();
+		return ((float)Date.getTime() - _second_orig) / 1000.0;
+	}
 
-    float fabs(float f) {
-        return (f > 0.0) ? f : -f;
-    }
+	float fabs(float f) {
+		return (f > 0.0) ? f : -f;
+	}
 
-    float[] new_DDfloat(int x, int y) {
-//        DDfloat f = new DDfloat;
+	float[] new_DDfloat(int x, int y) {
+		//        DDfloat f = new DDfloat;
 		float[] f = new float[x];
 		int i = 0;
 		while(i < x) {
 			f[i] = new float[y];
 			i=i+1;
 		}
-        return f;
-    }
+		return f;
+	}
 
-//    float matgen (DDfloat a, int lda, int n, float[] b) {
-    float matgen (float[] a, int lda, int n, float[] b) {
-        float norma;
-        int init, i, j;
-        init = 1325;
-        norma = 0.0;
+	//    float matgen (DDfloat a, int lda, int n, float[] b) {
+	float matgen (float[] a, int lda, int n, float[] b) {
+		float norma;
+		int init, i, j;
+		init = 1325;
+		norma = 0.0;
 		while(i < n) {
 			j = 0;
 			while(j < n) {
 				init = 3125 * init % 65536;
-                a[j][i] = (init - 32768.0)/16384.0;
-                norma = (a[j][i] > norma) ? a[j][i] : norma;
+				a[j][i] = (init - 32768.0)/16384.0;
+				norma = (a[j][i] > norma) ? a[j][i] : norma;
 				j+=1;
 			}
 			i+=1;
 		}
 		i = 0;
 		while(i < n) {
-            b[i] = 0.0;
+			b[i] = 0.0;
 			i+=1;
 		}
 		i=0;
@@ -107,76 +107,76 @@ class Linpack {
 			}
 			j+=1;
 		}
-        return norma;
-    }
+		return norma;
+	}
 
-    int idamax(int n, float[] dx, int dx_off, int incx) {
-        float dmax, dtemp;
-        int i, ix, itemp=0;
-        if (n < 1)
-            itemp = -1;
-        else if (n ==1)
-            itemp = 0;
-        else if (incx != 1) {
-            // code for increment not equal to 1
-            dmax = fabs(dx[0 + dx_off]);
-            ix = 1 + incx;
+	int idamax(int n, float[] dx, int dx_off, int incx) {
+		float dmax, dtemp;
+		int i, ix, itemp=0;
+		if (n < 1)
+			itemp = -1;
+		else if (n ==1)
+			itemp = 0;
+		else if (incx != 1) {
+			// code for increment not equal to 1
+			dmax = fabs(dx[0 + dx_off]);
+			ix = 1 + incx;
 			i=1;
 			while(i < n) {
-                dtemp = fabs(dx[ix + dx_off]);
-                if (dtemp > dmax)  {
-                    itemp = i;
-                    dmax = dtemp;
-                }
-                ix += incx;
+				dtemp = fabs(dx[ix + dx_off]);
+				if (dtemp > dmax)  {
+					itemp = i;
+					dmax = dtemp;
+				}
+				ix += incx;
 				i+=1;
-            }
-        }
-        else {
-            // code for increment equal to 1
-            itemp = 0;
-            dmax = fabs(dx[0 + dx_off]);
+			}
+		}
+		else {
+			// code for increment equal to 1
+			itemp = 0;
+			dmax = fabs(dx[0 + dx_off]);
 			i=1;
 			while(i < n) {
-                dtemp = fabs(dx[i + dx_off]);
-                if (dtemp > dmax) {
-                    itemp = i;
-                    dmax = dtemp;
-                }
+				dtemp = fabs(dx[i + dx_off]);
+				if (dtemp > dmax) {
+					itemp = i;
+					dmax = dtemp;
+				}
 				i+=1;
-            }
-        }
-        return (itemp);
-    }
+			}
+		}
+		return (itemp);
+	}
 
-    void daxpy(int n, float da, float[] dx, int dx_off, int incx, float[] dy, int dy_off, int incy) {
-        int i,ix,iy;
-        if ((n > 0) && (da != 0)) {
-            if (incx != 1 || incy != 1) {
-                // code for unequal increments or equal increments not equal to 1
-                ix = 0;
-                iy = 0;
-                if (incx < 0) ix = (-n + 1) * incx;
-                if (incy < 0) iy = (-n + 1) * incy;
+	void daxpy(int n, float da, float[] dx, int dx_off, int incx, float[] dy, int dy_off, int incy) {
+		int i,ix,iy;
+		if ((n > 0) && (da != 0)) {
+			if (incx != 1 || incy != 1) {
+				// code for unequal increments or equal increments not equal to 1
+				ix = 0;
+				iy = 0;
+				if (incx < 0) ix = (-n + 1) * incx;
+				if (incy < 0) iy = (-n + 1) * incy;
 				i=0;
 				while(i < n) {
-                    dy[iy + dy_off] += da * dx[ix + dx_off];
-                    ix += incx;
-                    iy += incy;
+					dy[iy + dy_off] += da * dx[ix + dx_off];
+					ix += incx;
+					iy += incy;
 					i+=1;
-                }
-            }
-            else {
-                // code for both increments equal to 1
+				}
+			}
+			else {
+				// code for both increments equal to 1
 				while(i < n) {
-                    dy[i + dy_off] += da * dx[i + dx_off];
+					dy[i + dy_off] += da * dx[i + dx_off];
 					i+=1;
 				}
 			}
 		}
 	}
 
-//	void dgesl(DDfloat a, int lda, int n, int[] ipvt, float[] b, int job) {
+	//	void dgesl(DDfloat a, int lda, int n, int[] ipvt, float[] b, int job) {
 	void dgesl(float[] a, int lda, int n, int[] ipvt, float[] b, int job) {
 		float t;
 		int k,kb,l,nm1,kp1;
@@ -256,7 +256,7 @@ class Linpack {
 		}
 	}
 
-//	int dgefa(DDfloat a, int lda, int n, int[] ipvt) {
+	//	int dgefa(DDfloat a, int lda, int n, int[] ipvt) {
 	int dgefa(float[] a, int lda, int n, int[] ipvt) {
 		float[] col_k, col_j;
 		float t;
@@ -427,9 +427,9 @@ class Linpack {
 		mflops_result = (float)(int)(mflops_result * 1000);
 		mflops_result /= 1000;
 		System.p("Mflops/s: " + "%.11f"(mflops_result) +
-				 "  Time: " + time_result + " secs" +
-				 "  Norm Res: " + "%.11f"(residn_result) +
-				 "  Precision: " + "%.11e"(eps_result));
+				"  Time: " + time_result + " secs" +
+				"  Norm Res: " + "%.11f"(residn_result) +
+				"  Precision: " + "%.11e"(eps_result));
 	}
 }
 

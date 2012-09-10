@@ -13,11 +13,11 @@ K.import("konoha.string");
 K.import("konoha.bytes");
 K.import("posix.file");
 
-WIDTH  = 64;
-HEIGHT = 64;
+const WIDTH  = 64;
+const HEIGHT = 64;
 
-NSUBSAMPLES = 2;
-NAO_SAMPLES = 4;
+const NSUBSAMPLES = 2;
+const NAO_SAMPLES = 4;
 
 class Vec {
 	float x;
