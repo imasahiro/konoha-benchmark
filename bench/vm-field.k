@@ -1,26 +1,24 @@
 /*
  * field access
  */
-include "_bench.k";
+K.import("konoha")
 N=1000000;
 
 class A {
-    Int a;
+    int a;
     A() {
         a = 10;
     }
-    Int b() {
+    int b() {
         return a;
     }
 }
 
-class Bench1 extends BenchMarkTask {
-    Bench1() {
-        this.name = "field read";
-    }
-    @Override void run() {
+class Bench1 {
+    void run() {
         A a = new A();
-        for (int i=0; i < N; i++) {
+        int i = 0;
+        while (i < N) {
             a.a; a.a; a.a; a.a; a.a; a.a; a.a; a.a; a.a; a.a;
             a.a; a.a; a.a; a.a; a.a; a.a; a.a; a.a; a.a; a.a;
             a.a; a.a; a.a; a.a; a.a; a.a; a.a; a.a; a.a; a.a;
@@ -31,16 +29,15 @@ class Bench1 extends BenchMarkTask {
             a.a; a.a; a.a; a.a; a.a; a.a; a.a; a.a; a.a; a.a;
             a.a; a.a; a.a; a.a; a.a; a.a; a.a; a.a; a.a; a.a;
             a.a; a.a; a.a; a.a; a.a; a.a; a.a; a.a; a.a; a.a;
+            i += 1;
         }
     }
 }
-class Bench2 extends BenchMarkTask {
-    Bench2() {
-        this.name = "field read with script defined getter";
-    }
-    @Override void run() {
+class Bench2 {
+    void run() {
         A a = new A();
-        for (int i=0; i < N; i++) {
+        int i = 0;
+        while (i < N) {
             a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b();
             a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b();
             a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b();
@@ -51,19 +48,18 @@ class Bench2 extends BenchMarkTask {
             a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b();
             a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b();
             a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b(); a.b();
+            i += 1;
         }
     }
 }
 
-@Expando class B {}
-class Bench3 extends BenchMarkTask {
-    Bench3() {
-        this.name = "field read with expando";
-    }
-    @Override void run() {
+/*
+class Bench3 {
+    void run() {
         B b = new B();
         b.v = 100;
-        for (int i=0; i < N; i++) {
+        int i = 0;
+        while (i < N) {
             b.v; b.v; b.v; b.v; b.v; b.v; b.v; b.v; b.v; b.v;
             b.v; b.v; b.v; b.v; b.v; b.v; b.v; b.v; b.v; b.v;
             b.v; b.v; b.v; b.v; b.v; b.v; b.v; b.v; b.v; b.v;
@@ -74,15 +70,12 @@ class Bench3 extends BenchMarkTask {
             b.v; b.v; b.v; b.v; b.v; b.v; b.v; b.v; b.v; b.v;
             b.v; b.v; b.v; b.v; b.v; b.v; b.v; b.v; b.v; b.v;
             b.v; b.v; b.v; b.v; b.v; b.v; b.v; b.v; b.v; b.v;
-            i++;
+            i += 1;
         }
     }
 }
+*/
+new Bench1().run();
+new Bench2().run();
+//new Bench3().run();
 
-void main (String[] args) {
-    Benchmark bm = new Benchmark(1);
-    bm.addTask new Bench1();
-    bm.addTask new Bench2();
-    bm.addTask new Bench3();
-    bm.run();
-}
