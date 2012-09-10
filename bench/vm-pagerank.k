@@ -5,6 +5,17 @@
 
 
 N=1000;
+
+K.import("konoha");
+K.import("konoha.int");
+K.import("konoha.float");
+K.import("konoha.string");
+K.import("konoha.class");
+K.import("konoha.while");
+K.import("konoha.assign");
+K.import("konoha.io");
+K.import("konoha.map");
+
 Map<String,Int[]> links = {
     "1" : [5],
     "2" : [4, 7, 8],
@@ -80,11 +91,9 @@ Map<String, Float> calculatePageRank(Map<String, Int[]> linkGraph, float damping
     }
     return pageRank;
 }
-class Bench1 extends BenchMarkTask {
-    Bench1() {
-        this.name = "PageRank";
-    }
-    @Override void run() {
+class Bench1 {
+    Bench1() {}
+    void run() {
         //print "input";
         //foreach (String node in links.keys()) {
         //    print node, links[node];
@@ -102,8 +111,4 @@ class Bench1 extends BenchMarkTask {
     }
 }
 
-void main (String[] args) {
-    Benchmark bm = new Benchmark(1);
-    bm.addTask new Bench1();
-    bm.run();
-}
+new Bench1().run();
