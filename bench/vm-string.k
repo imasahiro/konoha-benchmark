@@ -4,44 +4,41 @@
 N=10000000;
 U=1000;
 T=100;
-include "_bench.k";
 
-class Bench1 extends BenchMarkTask {
-    Bench1() {
-        this.name = "String.concat";
-    }
-    @Override void run() {
+K.import("konoha")
+
+class Bench1 {
+    void run() {
         String str = "1234567890";
         String zero = "0";
         String one = "1";
         // str.size = 60;
-        for (int i=0; i < T; i++) {
+        int i = 0;
+		while (i < T;) {
             String newstr = "";
-            for (int j=0; j < U; j++) {
+			int j = 0;
+            while (j < U) {
                 newstr = newstr + str + zero + one;
+				j += 1;
             }
             newstr = null;
+			i += 1;
         }
     }
 }
-class Bench2 extends BenchMarkTask {
-    Bench2() {
-        this.name = "String.trim";
-    }
-    @Override void run() {
+class Bench2 {
+    void run() {
         String empty10 = "          ";
         String s = empty10 + "1234567890" + empty10;
         String v = "";
-        for(int i = 0; i < N; i++) {
+		int i = 0;
+        while(i < N) {
             v = s.trim();
         }
-        OUT.println(v);
+        p(v);
     }
 }
 
-void main (String[] args) {
-    Benchmark bm = new Benchmark(1);
-    bm.addTask new Bench1();
-    bm.addTask new Bench2();
-    bm.run();
-}
+new Bench1().run();
+new Bench2().run();
+
