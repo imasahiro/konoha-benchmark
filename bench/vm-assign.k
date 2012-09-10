@@ -44,7 +44,7 @@ class Bench1  {
             a.a=2; a.a=2; a.a=2; a.a=2; a.a=2; a.a=2; a.a=2; a.a=2; a.a=2; a.a=2;
             a.a=2; a.a=2; a.a=2; a.a=2; a.a=2; a.a=2; a.a=2; a.a=2; a.a=2; a.a=2;
             a.a=2; a.a=2; a.a=2; a.a=2; a.a=2; a.a=2; a.a=2; a.a=2; a.a=2; a.a=2;
-			i = i + 1;;
+			i=i+1;;
         }
     }
 }
@@ -65,7 +65,7 @@ class Bench2 {
             a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1;
             a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1;
             a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1; a.b=1;
-			i = i + 1;;
+			i=i+1;;
         }
     }
 }
@@ -86,7 +86,7 @@ class Bench3 {
             c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false;
             c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false;
             c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false; c=true; c=false;
-			i = i + 1;
+			i=i+1;
         }
     }
 }
@@ -108,7 +108,7 @@ class Bench4 {
             d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a";
             d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a";
             d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a"; d="a";
-			i = i + 1;
+			i=i+1;
         }
     }
 }
@@ -128,7 +128,7 @@ class Bench5 {
             a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e;
             a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e;
             a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e; a.e=a.e;
-			i = i + 1;
+			i=i+1;
 		}
     }
 }

@@ -2,9 +2,9 @@
  * Calculate PageRank
  * original PHP source http://phpir.com/pagerank-in-php
  */
-include "_bench.k";
 
-N=2000;
+
+N=1000;
 Map<String,Int[]> links = {
     "1" : [5],
     "2" : [4, 7, 8],
