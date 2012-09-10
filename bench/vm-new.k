@@ -1,16 +1,16 @@
 /*
  * object.new
  */
-include "_bench.k";
-N=10_000_000;
+K.import("konoha")
+N = 10000000;
 
 class A {
 }
 class B {
-    Int    f0;
+    int    f0;
     String f1;
-    Float  f2;
-    B(Int a, String b, Float c) {
+    float  f2;
+    B(int a, String b, float c) {
         f0 = a;
         f1 = b;
         f2 = c;
@@ -18,12 +18,12 @@ class B {
 }
 class C {
     A      f0;
-    Int    f1;
+    int    f1;
     String f2;
     B      f3;
-    Float  f4;
+    float  f4;
     C      f5;
-    C(A a, Int b, String c, B d, Float e, C f) {
+    C(A a, int b, String c, B d, float e, C f) {
         f0 = a;
         f1 = b;
         f2 = c;
@@ -33,14 +33,14 @@ class C {
     }
 }
 class D0 {
-    Int b0;
+    int b0;
 }
 class D extends D0 {
     String f0;
     String f1;
     String f2;
     D      b1;
-    D(Int a, D b, String c, String d, String e) {
+    D(int a, D b, String c, String d, String e) {
         b0 = a;
         b1 = b;
         f0 = c;
@@ -48,12 +48,10 @@ class D extends D0 {
         f2 = e;
     }
 }
-class Bench1 extends BenchMarkTask {
-    Bench1() {
-        this.name = "createInstances";
-    }
-    @Override void run() {
-        for (int i=0; i < N; i++) {
+class Bench1 {
+    void run() {
+        int i = 0;
+        while (i < N) {
             A a0 = new A();
             A a1 = new A();
             A a2 = new A();
@@ -66,13 +64,10 @@ class Bench1 extends BenchMarkTask {
             C c1 = new C(a0, 0, "", b0, 0.0, c0);
             D d0 = new D();
             D d1 = new D(0, d0, "a", "b", "c");
-
+            i += 1;
         }
     }
 }
 
-void main (String[] args) {
-    Benchmark bm = new Benchmark(1);
-    bm.addTask new Bench1();
-    bm.run();
-}
+new Bench1().run();
+

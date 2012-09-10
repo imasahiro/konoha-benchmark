@@ -1,14 +1,19 @@
 /*
  * Richards Benchmark
  */
-include "_bench.k";
+K.import("konoha")
+K.import("konoha.bytes")
+K.import("konoha.date")
+K.import("konoha.int")
+K.import("konoha.null")
+
 // based on a Java version:
 //  Based on original version written in BCPL by Dr Martin Richards
 //  in 1981 at Cambridge University Computer Laboratory, England
-//  and a C++ version derived from a Smalltalk version written by
+//  and a C += 1 version derived from a Smalltalk version written by
 //  L Peter Deutsch.
 //  Java version:  Copyright (C) 1995 Sun Microsystems, Inc.
-//  Translation from C++, Mario Wolczko
+//  Translation from C += 1, Mario Wolczko
 //  Outer loop added by Alex Jacoby
 
 // Task IDs
@@ -106,50 +111,60 @@ class WorkerTaskRec extends TaskRec {
 // Task
 
 class TaskState {
-    Boolean packet_pending;
-    Boolean task_waiting;
-    Boolean task_holding;
-    TaskState() {
+    boolean packet_pending;
+    boolean task_waiting;
+    boolean task_holding;
+    @Public TaskState() {
         this.packet_pending = true;
         this.task_waiting   = false;
         this.task_holding   = false;
     }
 
-    TaskState packetPending() {
+    @Public TaskState packetPending() {
         this.packet_pending = true;
         this.task_waiting   = false;
         this.task_holding   = false;
         return this;
     }
 
-    TaskState waiting() {
+    @Public TaskState waiting() {
         this.packet_pending = false;
         this.task_waiting   = true;
         this.task_holding   = false;
         return this;
     }
 
-    TaskState running() {
+    @Public TaskState running() {
         this.packet_pending = false;
         this.task_waiting   = false;
         this.task_holding   = false;
         return this;
     }
 
-    TaskState waitingWithPacket() {
+    @Public TaskState waitingWithPacket() {
         this.packet_pending = true;
         this.task_waiting   = true;
         this.task_holding   = false;
         return this;
     }
 
-    Boolean isTaskHoldingOrWaiting() {
-        return task_holding or (not packet_pending and task_waiting);
+    @Public boolean isTaskHoldingOrWaiting() {
+        return task_holding || (!packet_pending && task_waiting);
     }
 
-    Boolean isWaitingWithPacket() {
-        return packet_pending and task_waiting and not task_holding;
-    }
+	@Public boolean isWaitingWithPacket() {
+		return packet_pending && task_waiting && !task_holding;
+	}
+
+	@Public boolean isPacketPending() {
+		return packet_pending;
+	}
+	@Public boolean isTaskHolding() {
+		return task_holding;
+	}
+	@Public boolean isTaskWaiting() {
+		return task_waiting;
+	}
 }
 TRACING = false;
 int layout = 0;
@@ -162,15 +177,13 @@ class Task extends TaskState {
     Packet input;
     TaskRec handle;
 
-    void init(int i, int p, Packet w, TaskState initialState, TaskRec r);
     Task(int i, int p, Packet w, TaskState initialState, TaskRec r) {
         init(i, p, w, initialState, r);
     }
-    @Virtual Task fn(Packet pkt, TaskRec r) {
-        ERR.println("error");
+    @Public @Virtual Task fn(Packet pkt, TaskRec r) {
+        p("error");
         return null;
     }
-    Task Task.findtcb(int id);
 }
 
 class TaskWorkArea{
@@ -191,13 +204,13 @@ TaskWorkArea taskWorkArea = new TaskWorkArea();
 void trace(int a) {
     layout -= 1;
     if (layout <= 0) {
-        OUT.println();
+        p();
         layout = 50
     }
-    OUT.print(a);
+    p(a);
 }
 
-void Task.init(int i, int p, Packet w, TaskState initialState, TaskRec r) {
+@Public void Task.init(int i, int p, Packet w, TaskState initialState, TaskRec r) {
     this.link = taskWorkArea.taskList;
     this.ident = i;
     this.priority = p;
@@ -213,7 +226,7 @@ void Task.init(int i, int p, Packet w, TaskState initialState, TaskRec r) {
     taskWorkArea.taskTab[i] = this;
 }
 
-Task Task.addPacket(Packet p, Task old) {
+@Public Task Task.addPacket(Packet p, Task old) {
     if (this.input == null) {
         this.input = p;
         this.packet_pending = true;
@@ -228,7 +241,7 @@ Task Task.addPacket(Packet p, Task old) {
 }
 
 
-Task Task.runTask() {
+@Public Task Task.runTask() {
     Packet msg;
     if (this.isWaitingWithPacket()) {
         msg = this.input;
@@ -248,18 +261,18 @@ Task Task.runTask() {
 }
 
 
-Task Task.waitTask() {
+@Public Task Task.waitTask() {
     this.task_waiting = true;
     return this;
 }
 
-Task Task.hold() {
+@Public Task Task.hold() {
     taskWorkArea.holdCount += 1;
     this.task_holding = true;
     return this.link;
 }
 
-Task Task.release(int i) {
+@Public Task Task.release(int i) {
     Task t = this.findtcb(i);
     t.task_holding = false;
     if (t.priority > this.priority) {
@@ -270,7 +283,7 @@ Task Task.release(int i) {
     }
 }
 
-Task Task.qpkt(Packet pkt) {
+@Public Task Task.qpkt(Packet pkt) {
     Task t = this.findtcb(pkt.ident);
     taskWorkArea.qpktCount += 1;
     pkt.link = null;
@@ -278,10 +291,10 @@ Task Task.qpkt(Packet pkt) {
     return t.addPacket(pkt, this);
 }
 
-Task Task.findtcb(int id) {
+@Public Task Task.findtcb(int id) {
     Task t = taskWorkArea.taskTab[id];
     if (t == null) {
-        OUT.println("\tBad task id " + id);
+        p("\tBad task id " + id);
     }
     return t;
 }
@@ -308,7 +321,9 @@ class DeviceTask extends Task {
         }
         else {
             d.pending = pkt;
-            if (TRACING) trace(pkt.datum);
+            if (TRACING){
+				trace(pkt.datum);
+			}
             ret = this.hold();
         }
         return ret;
@@ -404,12 +419,14 @@ class WorkTask extends Task {
         pkt.ident = dest;
         pkt.datum = 0;
 
-        for (int i = 0; i < BUFSIZE; i++) {
+        int i = 0;
+		while(i < BUFSIZE) {
             w.count += 1;
             if (w.count > 26) {
                 w.count = 1;
             }
             pkt.data[i] = 'A' + w.count - 1;
+			i += 1;
         }
 
         return this.qpkt(pkt);
@@ -418,46 +435,48 @@ class WorkTask extends Task {
 
 void schedule() {
     Task t = taskWorkArea.taskList;
-    while (t != null) {
+    while (!t.isNull()) {
         Packet pkt = null;
-
         if (TRACING) {
-            OUT.print("tcb = "+t.ident);
+            p("tcb = "+t.ident);
         }
 
         if (t.isTaskHoldingOrWaiting()) {
             t = t.link
         }
         else {
-            if (TRACING)
+            if (TRACING){
                 trace('0'+t.ident);
+			}
             t = t.runTask();
         }
     }
 }
 
-N=1000;
-class Richards extends BenchMarkTask  {
+N=1;
+class Richards  {
     Richards() {
-        this.name = "RichardsBenchmark";
+        //this.name = "RichardsBenchmark";
     }
-    @Override void run() {
+    void run() {
         int iterations = N;
-        long total_ms;
-        OUT.println("Richards benchmark (konoha) starting...");
-        long startTime = System.getTime();
-        if (!exec())
+        int total_ms;
+        p("Richards benchmark (konoha) starting...");
+        int startTime = Date.getTime();
+        if (!exec()){
             return;
-        long endTime = System.getTime();
-        OUT.println("finished.");
+		}
+        int endTime = Date.getTime();
+        p("finished.");
         total_ms= endTime - startTime;
-        OUT.println("Total time for " + iterations + " iterations: " + (total_ms/1000.0) + " secs");
-        OUT.println("Average time per iteration: " + (total_ms / iterations) + " ms");
+        p("Total time for " + iterations + " iterations: " + (total_ms/1000.0) + " secs");
+        p("Average time per iteration: " + (total_ms / iterations) + " ms");
     }
 
     boolean exec() {
         int iterations = N;
-        for (int i= 0; i < iterations; i++){
+		int i = 0;
+        while (i < iterations){
             taskWorkArea.holdCount = 0;
             taskWorkArea.qpktCount = 0;
 
@@ -468,7 +487,7 @@ class Richards extends BenchMarkTask  {
             new WorkTask(I_WORK, 1000, wkq,
                     (new TaskState()).waitingWithPacket(),
                     new WorkerTaskRec());
-
+			
             wkq = new Packet(null, I_DEVA, K_DEV);
             wkq = new Packet(wkq , I_DEVA, K_DEV);
             wkq = new Packet(wkq , I_DEVA, K_DEV);
@@ -482,29 +501,29 @@ class Richards extends BenchMarkTask  {
             new HandlerTask(I_HANDLERB, 3000, wkq,
                     (new TaskState()).waitingWithPacket(),
                     new HandlerTaskRec());
-
+			
             wkq = null;
             new DeviceTask(I_DEVA, 4000, wkq, (new TaskState()).waiting(),
                     new DeviceTaskRec());
             new DeviceTask(I_DEVB, 5000, wkq, (new TaskState()).waiting(),
                     new DeviceTaskRec());
-
+			
             schedule();
-
+			
             if (taskWorkArea.holdCount == 9297 &&
                     taskWorkArea.qpktCount == 23246) {
                 // correct
             } else {
-                OUT.println("Incorrect results!");
+                p("Incorrect results!");
                 return false;
             }
+			
+			i += 1;
         }
         return true;
     }
 
 }
-void main (String[] args) {
-    Benchmark bm = new Benchmark(1);
-    bm.addTask new Richards();
-    bm.run();
-}
+
+new Richards().run();
+

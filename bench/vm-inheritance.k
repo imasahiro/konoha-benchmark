@@ -1,97 +1,109 @@
 /*
  * object inheritance
  */
-include "_bench.k";
-N=1_000_000;
+K.import("konoha")
+N=1000000;
 
 class A {
-    @Virtual int f() { return 0; }
+    @public @Virtual int f() { return 0; }
 }
 class B extends A {
-    @Override int f() { return 1; }
+    @public int f() { return 1; }
 }
 class C extends A {
-    @Virtual @Override int f() { return 2; }
+    @public @Virtual int f() { return 2; }
 }
 class D extends C {
-    @Override int f() { return 3; }
+    @public int f() { return 3; }
 }
 
-class Bench1 extends BenchMarkTask {
+class Bench1 {
     Bench1() {
-        this.name = "monomorphic";
+        //this.name = "monomorphic";
     }
-    @Override void run() {
+    void run() {
         A a = new A();
         A b = new B();
         A c = new C();
         A d = new D();
-        for (int i=0; i < N; i++) {
+        int i = 0;
+		while(i < N) {
             a.f(); b.f(); c.f(); d.f(); a.f(); b.f(); c.f(); d.f(); a.f(); b.f();
             c.f(); d.f(); a.f(); b.f(); c.f(); d.f(); a.f(); b.f(); c.f(); d.f();
+            i += 1;
         }
     }
 }
-class Bench2 extends BenchMarkTask {
+class Bench2 {
     Bench2() {
-        this.name = "bimorphic";
+        //this.name = "bimorphic";
     }
-    @Override void run() {
+    void run() {
         A a = new A();
         A b = new B();
         A c = new C();
         A d = new D();
-        for (int i=0; i < N; i++) {
+        int i = 0;
+		while(i < N) {
             a.f(); b.f(); c.f(); d.f(); a.f(); b.f(); c.f(); d.f(); a.f(); b.f();
             c.f(); d.f(); a.f(); b.f(); c.f(); d.f(); a.f(); b.f(); c.f(); d.f();
+            i += 1;
         }
     }
 }
-class Bench3 extends BenchMarkTask {
+class Bench3 {
     Bench3() {
-        this.name = "polymorphic";
+        //this.name = "polymorphic";
     }
-    @Override void run() {
+    void run() {
         A a = new A();
         A b = new B();
         A c = new C();
         A d = new D();
-        for (int i=0; i < N; i++) {
+        int i = 0;
+		while(i < N) {
             a.f(); b.f(); c.f(); d.f(); a.f(); b.f(); c.f(); d.f(); a.f(); b.f();
             c.f(); d.f(); a.f(); b.f(); c.f(); d.f(); a.f(); b.f(); c.f(); d.f();
+            i += 1;
         }
     }
 }
-class Bench4 extends BenchMarkTask {
+class Bench4 {
     Bench4() {
-        this.name = "polymorphic ver2";
+        //this.name = "polymorphic ver2";
     }
-    @Override void run() {
+    void run() {
         A[] array = new A[20];
-        for (int i=0; i < 20; i++) {
-            if (i % 4 == 0)
+        int i = 0;
+        // TODO unexpected TypeError is raised here.
+		while(i < 20) {
+            if (i % 4 == 0){
                 array[i] = new A();
-            else if (i % 4 == 1)
+            }else if (i % 4 == 1){
                 array[i] = new B();
-            else if (i % 4 == 2)
+            }
+            else if (i % 4 == 2){
                 array[i] = new C();
-            else if (i % 4 == 3)
+            }
+            else if (i % 4 == 3){
                 array[i] = new D();
+            }
+            i += 1;
         }
-        for (int i=0; i < N; i++) {
-            for (int j=0; j < 20; j++) {
+		while(i < N) {
+            int j = 0;
+            while (j < 20) {
                 A a = array[j];
                 a.f();
+                j += 1;
             }
+            i += 1;
         }
     }
 }
 
-void main (String[] args) {
-    BenchMark bm = new Benchmark(1);
-    bm.addTask new Bench1();
-    bm.addTask new Bench2();
-    bm.addTask new Bench3();
-    bm.addTask new Bench4();
-    bm.run();
-}
+new Bench1().run();
+new Bench2().run();
+new Bench3().run();
+new Bench4().run();
+
