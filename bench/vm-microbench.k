@@ -2,58 +2,70 @@
  * konoha microbench by kimio kuramitsu
  */
 
-using konoha.math.*;
-include "_bench.k";
-N=100_000_000;
+K.import("konoha")
+K.import("konoha.math")
+
+N = 100000000;
 
 int testSimpleLoop() {
-    int i;
-    for(i = 0; i < N; i++) {
+    int i = 0;
+	while(i < N) {
+        i += 1;
     }
     return i;
 }
 
 int testLocalVariable() {
-    y = 0;
-    for(i = 0; i < N; i++) {
+    int y = 0;
+    int i = 0;
+	while(i < N) {
         y = i;
+        i += 1;
     }
     return y;
 }
 
-global_x = 0;
-global_y = 0;
-global_z = 0;
+int globalX = 0;
+int globalY = 0;
+int globalZ = 0;
 
 int testGlobalVariable() {
     int j;
-    for(i = 0; i < N; i++) {
-        global_y = i;
-        i = global_x + i + global_x;
+    int i = 0;
+	while(i < N) {
+        globalY = i;
+        i = globalX + i + globalX;
+        i += 1;
     }
-    return global_y;
+    return globalY;
 }
 
 String testStringAssignment() {
-    s = "";
-    for(i = 0; i < N; i++) {
+    String s = "";
+    int i = 0;
+	while(i < N) {
         s = "A";
+        i += 1;
     }
     return s;
 }
 
-int testIntegerOperation() {
-    y = 0;
-    for(i = 0; i < N; i++) {
+int testintegerOperation() {
+    int y = 0;
+    int i = 0;
+	while(i < N) {
         y += 1;
+        i += 1;
     }
     return y;
 }
 
-float testFloatOperation() {
-    f = 0.0;
-    for(i = 0; i < N; i++) {
+float testfloatOperation() {
+    float f = 0.0;
+    int i = 0;
+	while(i < N) {
         f += 0.1;
+        i += 1;
     }
     return f;
 }
@@ -61,9 +73,10 @@ float testFloatOperation() {
 void func0() {}
 
 int testFunctionCall() {
-    i=0;
-    for(i = 0; i < N; i++) {
+    int i = 0;
+	while(i < N) {
         func0();
+        i += 1;
     }
     return i;
 }
@@ -71,26 +84,30 @@ int testFunctionCall() {
 int func1() { return 1; }
 
 int testFunctionReturn() {
-    res = 0;
-    for(i = 0; i< N; i++) {
+    int res = 0;
+    int i = 0;
+	while(i< N) {
         res = func1();
+        i += 1;
     }
     return res;
 }
 
 int testMathFabs() {
-    int i;
-    for(i = 0; i< N; i++) {
+    int i = 0;
+	while(i< N) {
         Math.fabs(-1.0);
+        i += 1;
     }
     return i;
 }
 
 int testCallFunctionObject() {
-    int i;
-    f = func0;
-    for(i = 0; i< N; i++) {
+    Func[void] f = func0;
+    int i = 0;
+	while(i< N) {
         f();
+        i += 1;
     }
     return i;
 }
@@ -111,151 +128,152 @@ class Dim {
 }
 
 int testObjectCreation() {
-    int i;
-    for(i = 0; i < N; i++) {
-        d = new Dim();
+    int i = 0;
+	while(i < N) {
+        Dim d = new Dim();
+        i += 1;
     }
     return i;
 }
 
 Dim testFieldVariable() {
-    d = new Dim();
-    for(i = 0; i < N; i++) {
+    Dim d = new Dim();
+    int i = 0;
+	while(i < N) {
         d.y = 1;
+        i += 1;
     }
     return d;
 }
 
 int testMethodCall() {
-    int i;
-    d = new Dim();
-    for(i = 0; i < N; i++) {
+    Dim d = new Dim();
+    int i = 0;
+	while(i < N) {
         d.f();
+        i += 1;
     }
     return i;
 }
 
 
-class Bench1 extends BenchMarkTask {
+class Bench1 {
     Bench1() {
-        this.name = "SimpleLoop";
+        //this.name = "SimpleLoop";
     }
-    @Override void run() {
+    void run() {
         testSimpleLoop();
     }
 }
-class Bench2 extends BenchMarkTask {
+class Bench2 {
     Bench2() {
-        this.name = "LocalVariable";
+        //this.name = "LocalVariable";
     }
-    @Override void run() {
+    void run() {
         testLocalVariable();
     }
 }
-class Bench3 extends BenchMarkTask {
+class Bench3 {
     Bench3() {
-        this.name = "GlobalVariable";
+        //this.name = "GlobalVariable";
     }
-    @Override void run() {
+    void run() {
         testGlobalVariable();
     }
 }
-class Bench4 extends BenchMarkTask {
+class Bench4 {
+    int i;
     Bench4() {
-        this.name = "StringAssignment";
+        //this.name = "StringAssignment";
     }
-    @Override void run() {
+    void run() {
         testStringAssignment();
     }
 }
-class Bench5 extends BenchMarkTask {
+class Bench5 {
     Bench5() {
-        this.name = "IntegerOperation";
+        //this.name = "integerOperation";
     }
-    @Override void run() {
-        testIntegerOperation();
+    void run() {
+        testintegerOperation();
     }
 }
-class Bench6 extends BenchMarkTask {
+class Bench6 {
     Bench6() {
-        this.name = "FloatOperation";
+        //this.name = "floatOperation";
     }
-    @Override void run() {
-        testFloatOperation();
+    void run() {
+        testfloatOperation();
     }
 }
-class Bench7 extends BenchMarkTask {
+class Bench7 {
     Bench7() {
-        this.name = "FunctionCall";
+        //this.name = "FunctionCall";
     }
-    @Override void run() {
+    void run() {
         testFunctionCall();
     }
 }
-class Bench8 extends BenchMarkTask {
+class Bench8 {
     Bench8() {
-        this.name = "FunctionReturn";
+        //this.name = "FunctionReturn";
     }
-    @Override void run() {
+    void run() {
         testFunctionReturn();
     }
 }
-class Bench9 extends BenchMarkTask {
+class Bench9 {
     Bench9() {
-        this.name = "NativeFunction";
+        //this.name = "NativeFunction";
     }
-    @Override void run() {
+    void run() {
         testMathFabs();
     }
 }
-class Bench10 extends BenchMarkTask {
+class Bench10 {
     Bench10() {
-        this.name = "CallFunctionObject";
+        //this.name = "CallFunctionObject";
     }
-    @Override void run() {
+    void run() {
         testCallFunctionObject();
     }
 }
-class Bench11 extends BenchMarkTask {
+class Bench11 {
     Bench11() {
-        this.name = "ObjectCreation";
+        //this.name = "ObjectCreation";
     }
-    @Override void run() {
+    void run() {
         testObjectCreation();
     }
 }
-class Bench12 extends BenchMarkTask {
+class Bench12 {
     Bench12() {
-        this.name = "FieldVariable";
+        //this.name = "FieldVariable";
     }
-    @Override void run() {
+    void run() {
         testFieldVariable();
     }
 }
-class Bench13 extends BenchMarkTask {
+class Bench13 {
     Bench13() {
-        this.name = "MethodCall";
+        //this.name = "MethodCall";
     }
-    @Override void run() {
+    void run() {
         testMethodCall();
     }
 }
 
-void main (String[] args) {
-    Benchmark bm = new Benchmark(1);
-    bm.addTask(new Bench1());
-    bm.addTask(new Bench2());
-    bm.addTask(new Bench3());
-    bm.addTask(new Bench4());
-    bm.addTask(new Bench5());
-    bm.addTask(new Bench6());
-    bm.addTask(new Bench7());
-    bm.addTask(new Bench8());
-    bm.addTask(new Bench9());
-    bm.addTask(new Bench10());
-    bm.addTask(new Bench11());
-    bm.addTask(new Bench12());
-    bm.addTask(new Bench13());
-    bm.run();
+new Bench1().run();
+new Bench2().run();
+new Bench3().run();
+new Bench4().run();
+new Bench5().run();
+new Bench6().run();
+new Bench7().run();
+new Bench8().run();
+new Bench9().run();
+new Bench10().run();
+new Bench11().run();
+new Bench12().run();
+new Bench13().run();
 
-}
