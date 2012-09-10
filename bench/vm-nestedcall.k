@@ -1,8 +1,8 @@
 /*
  * NestedCall
  */
-include "_bench.k";
-N=100_000;
+K.import("konoha");
+N=1000;
 
 int f0(int a) { return a+10;}
 int f1(int a) { return f0(a);}
@@ -1006,19 +1006,15 @@ int f998(int a) { return f997(a);}
 int f999(int a) { return f998(a);}
 int f1000(int a) { return f999(a);}
 
-class Bench1 extends BenchMarkTask {
-    Bench1() {
-        this.name = "NestedCall";
-    }
-    @Override void run() {
-        for (int i=0; i < N; i++) {
-            f1000(i);
-        }
-    }
+class Bench1 {
+	void run() {
+		int i = 0;
+		while ( i < N) {
+			f1000(i);
+			i += 1;
+		}
+	}
 }
 
-void main (String[] args) {
-    Benchmark bm = new Benchmark(1);
-    bm.addTask new Bench1();
-    bm.run();
-}
+new Bench1().run();
+
