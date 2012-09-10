@@ -1,7 +1,8 @@
 /*
  * fibonacci 40
  */
-include "_bench.k";
+K.import("konoha")
+K.import("konoha.string")
 N = 40;
 
 int fibo(int n) {
@@ -34,44 +35,32 @@ String string_fibo(int n) {
     return string_fibo(n-1) + string_fibo(n-2);
 }
 
-class FiboInt extends BenchMarkTask {
-    FiboInt() {
-        this.name = "fibo:int"+N;
-    }
-    @Override void run() {
-        OUT.println("fibo :"+ fibo(N));
+class FiboInt {
+    void run() {
+        p("fibo :"+ fibo(N));
     }
 }
-class FiboFloat extends BenchMarkTask {
-    FiboFloat() {
-        this.name = "fibo:float"+N;
-    }
-    @Override void run() {
-        OUT.println("fibo :"+ float_fibo(N));
+class FiboFloat {
+    void run() {
+        p("fibo :"+ float_fibo(N));
     }
 }
-class FiboString extends BenchMarkTask {
-    FiboString() {
-        this.name = "fibo:string"+N;
-    }
-    @Override void run() {
-        OUT.println("fibo :"+ string_fibo(N).size);
+class FiboString {
+    void run() {
+        p("fibo :"+ string_fibo(N).size);
     }
 }
-//class FiboDyn extends BenchMarkTask {
+//class FiboDyn {
 //    FiboDyn() {
 //        this.name = "fibo:dynamic"+N;
 //    }
-//    @Override void run() {
-//        OUT.println("fibo :"+ dyn_fibo(N));
+//    void run() {
+//        p("fibo :"+ dyn_fibo(N));
 //    }
 //}
 
-void main (String[] args) {
-    Benchmark bm = new Benchmark(1);
-    bm.addTask new FiboInt();
-    bm.addTask new FiboFloat();
-    bm.addTask new FiboString();
-    //bm.addTask new FiboDyn();
-    bm.run();
-}
+new FiboInt().run();
+new FiboFloat().run();
+new FiboString().run();
+//new FiboDyn().run();
+
