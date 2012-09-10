@@ -1,13 +1,10 @@
 /*
  * loop
  */
-N=100_000_000;
-include "_bench.k";
-class Bench1 extends BenchMarkTask {
-    Bench1() {
-        this.name = "while-true-break loop";
-    }
-    @Override void run() {
+N=100000000;
+K.import("konoha")
+class Bench1 {
+    void run() {
         int i = 0;
         while (true) {
             if (i == N) {
@@ -18,11 +15,8 @@ class Bench1 extends BenchMarkTask {
     }
 }
 
-class Bench2 extends BenchMarkTask {
-    Bench2() {
-        this.name = "do-while-true-break loop";
-    }
-    @Override void run() {
+class Bench2 {
+    void run() {
         int i = 0;
         do {
             if (i == N) {
@@ -32,13 +26,11 @@ class Bench2 extends BenchMarkTask {
         } while (true);
     }
 }
-class Bench3 extends BenchMarkTask {
-    Bench3() {
-        this.name = "for-loop";
-    }
-    @Override void run() {
+
+class Bench3 {
+    void run() {
         int i = 0;
-        for (; i < N; i++) {
+        for (; i < N; i += 1) {
         }
     }
 }
@@ -46,28 +38,26 @@ A=1000;
 B=100;
 int f() {
     int n = 0;
-    for (int i = 0; i < A; i++) {
-        for (int j = 0; j < A; j++) {
-            for (int k = 0; k < B; k++) {
+    for (int i = 0; i < A; i += 1) {
+        for (int j = 0; j < A; j += 1) {
+            for (int k = 0; k < B; k += 1) {
                 n = n + k;
             }
         }
     }
     return n;
 }
-class Bench4 extends BenchMarkTask {
+class Bench4 {
     Bench4() {
         this.name = "nested-loop";
     }
-    @Override void run() {
+    void run() {
         f();
     }
 }
-void main (String[] args) {
-    Benchmark bm = new Benchmark(1);
-    bm.addTask new Bench1();
-    bm.addTask new Bench2();
-    bm.addTask new Bench3();
-    bm.addTask new Bench4();
-    bm.run();
-}
+
+new Bench1().run();
+new Bench2().run();
+new Bench3().run();
+new Bench4().run();
+
