@@ -73,7 +73,7 @@ class GCBench {
 		if (PRINT) {
 			p("Creating " + iNumIters + " trees of depth " + depth);
 		}
-		tStart = Date.getTime();
+		tStart = new Date().getTime();
 		int i = 0;
 		while (i < iNumIters) {
 			tempTree = new Node();
@@ -81,18 +81,18 @@ class GCBench {
 			tempTree = null;
 			i += 1;
 		}
-		tFinish = Date.getTime();
+		tFinish = new Date().getTime();
 		if (PRINT) {
 			p("\tTop down construction took " + (tFinish - tStart) + "secs");
 		}
-		tStart = Date.getTime();
+		tStart = new Date().getTime();
 		int i = 0;
 		while (i < iNumIters) {
 			tempTree = makeTree(depth);
 			tempTree = null;
 			i += 1;
 		}
-		tFinish = Date.getTime();
+		tFinish = new Date().getTime();
 		if (PRINT) {
 			p("\tBottom up construction took " + (tFinish - tStart) + "secs");
 		}
@@ -111,7 +111,7 @@ class GCBench {
 					+ kStretchTreeDepth);
 		}
 		printDiagnostics();
-		tStart = Date.getTime();
+		tStart = new Date().getTime();
 
 		// Stretch the memory space quickly
 		tempTree = makeTree(kStretchTreeDepth);
@@ -155,7 +155,7 @@ class GCBench {
 			}
 		}
 
-		tFinish = Date.getTime();
+		tFinish = new Date().getTime();
 		tElapsed = tFinish-tStart;
 		printDiagnostics();
 		if (PRINT) {
