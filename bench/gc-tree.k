@@ -3,6 +3,7 @@
  * http://www.cs.cmu.edu/~spoons/gc/benchmarks.html
  */
 K.import("konoha");
+K.import("konoha.date")
 
 class Node {
 	Node left, right;
@@ -40,7 +41,7 @@ class GCBench {
 		if (iDepth<=0) {
 			return;
 		} else {
-			iDepth--;
+			iDepth -= 1;
 			thisNode.left  = new Node();
 			thisNode.right = new Node();
 			populate (iDepth, thisNode.left);
@@ -60,7 +61,7 @@ class GCBench {
 	@static void printDiagnostics() {
 		//if (PRINT) {
 	//    int lTotalMemory = System.getTotalMemory();
-  //    System.out.println(" Total memory available=" + lTotalMemory + " bytes");
+  //    p(" Total memory available=" + lTotalMemory + " bytes");
   //}
 	}
 
@@ -70,26 +71,30 @@ class GCBench {
 		Node   tempTree;
 
 		if (PRINT) {
-			System.out.println("Creating " + iNumIters + " trees of depth " + depth);
+			p("Creating " + iNumIters + " trees of depth " + depth);
 		}
-		tStart = System.getTime();
-		for (int i = 0; i < iNumIters; ++i) {
+		tStart = Date.getTime();
+		int i = 0;
+		while (i < iNumIters) {
 			tempTree = new Node();
 			populate(depth, tempTree);
 			tempTree = null;
+			i += 1;
 		}
-		tFinish = System.getTime();
+		tFinish = Date.getTime();
 		if (PRINT) {
-			System.out.println("\tTop down construction took " + (tFinish - tStart) + "secs");
+			p("\tTop down construction took " + (tFinish - tStart) + "secs");
 		}
-		tStart = System.getTime();
-		for (int i = 0; i < iNumIters; ++i) {
+		tStart = Date.getTime();
+		int i = 0;
+		while (i < iNumIters) {
 			tempTree = makeTree(depth);
 			tempTree = null;
+			i += 1;
 		}
-		tFinish = System.getTime();
+		tFinish = Date.getTime();
 		if (PRINT) {
-			System.out.println("\tBottom up construction took " + (tFinish - tStart) + "secs");
+			p("\tBottom up construction took " + (tFinish - tStart) + "secs");
 		}
 
 	}
@@ -101,12 +106,12 @@ class GCBench {
 		float tElapsed;
 
 		if (PRINT) {
-			System.out.println(
+			p(
 					" Stretching memory with a binary tree of depth "
 					+ kStretchTreeDepth);
 		}
 		printDiagnostics();
-		tStart = System.getTime();
+		tStart = Date.getTime();
 
 		// Stretch the memory space quickly
 		tempTree = makeTree(kStretchTreeDepth);
@@ -114,7 +119,7 @@ class GCBench {
 
 		// Create a long lived objects
 		if (PRINT) {
-			System.out.println(
+			p(
 					" Creating a long-lived binary tree of depth " +
 					kLongLivedTreeDepth);
 		}
@@ -123,34 +128,38 @@ class GCBench {
 
 		// Create long-lived array, filling half of it
 		if (PRINT) {
-			System.out.println(
+			p(
 					" Creating a long-lived array of "
 					+ kArraySize + " floats");
 		}
 		float[] array = new float[kArraySize];
-		for (int i = 1; i < kArraySize/2; ++i) {
+		int i = 1;
+		while (i < kArraySize/2) {
 			array[i] = 1.0/i;
+			i += 1;
 		}
 		printDiagnostics();
 
-		for (int d = kMinTreeDepth; d <= kMaxTreeDepth; d += 2) {
+		int d = kMinTreeDepth;
+		while (d <= kMaxTreeDepth) {
 			timeConstruction(d);
+			d += 2;
 		}
 
 		if (longLivedTree == null || array[1000] != 1.0/1000) {
 			if (PRINT) {
-				System.out.println("Failed");
+				p("Failed");
 				// fake reference to LongLivedTree
 		// and array
 	// to keep them from being optimized away
 			}
 		}
 
-		tFinish = System.getTime();
+		tFinish = Date.getTime();
 		tElapsed = tFinish-tStart;
 		printDiagnostics();
 		if (PRINT) {
-			System.out.println("Completed in " + tElapsed + "s.");
+			p("Completed in " + tElapsed + "s.");
 		}
 	}
 }
