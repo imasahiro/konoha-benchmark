@@ -14,17 +14,26 @@ class BenchGC {
 	}
 	void run() {
 		A head = new A();
-		for (int i=0; i < COUNT; i++) {
-			for (int j=0; j < N; j++) {
+		int i = 0;
+		while (i < COUNT) {
+			int j = 0;
+			while (j < N) {
 				/* short live objects */
-				for (int k=0; k < LIST_SIZE; k++) { new A(); }
+				int k = 0;
+				while (k < LIST_SIZE) {
+					new A();
+					k += 1;
+				}
 				/* create link list */
 				A a = new A();
 				head.next = a;
 				head = a;
+				j += 1;
 			}
+			i += 1;
 		}
 	}
 }
 
 new BenchGC().run();
+
