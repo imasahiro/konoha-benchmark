@@ -4,17 +4,18 @@
    class.  We do not use Java's own java.util.Random so that we can compare
    results with equivalent C and Fortran coces.
  */
-K.import("konoha.class");
-K.import("konoha.global");
-K.import("konoha.array");
-K.import("konoha.float");
-K.import("konoha.int");
-K.import("konoha.assign");
+import("konoha.class");
+import("konoha.global");
+import("konoha.array");
+import("konoha.float");
+import("konoha.int");
+import("konoha.assign");
 
-MDIG = 32;
-ONE = 1;
-M1 = (ONE << (MDIG-2)) + ((ONE << (MDIG-2))-ONE);
-int M2 = ONE << (MDIG/2);
+const MDIG = 32;
+const HMDIG = 16;
+const ONE = 1;
+const M1 = (ONE << (MDIG-2)) + ((ONE << (MDIG-2))-ONE);
+const M2 = ONE << (HMDIG);
 
 /* For mdig = 32 : M1 =          2147483647, M2 =      65536
    For mdig = 64 : M1 = 9223372036854775807, M2 = 4294967296 

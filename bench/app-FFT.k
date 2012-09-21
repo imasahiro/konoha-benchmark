@@ -1,10 +1,15 @@
 /*
  * scimark2 FFT bench
  */
-K.import("konoha");
-K.import("konoha.math");
-K.load("../scimark/scimarkutil/Constants.k");
-K.load("../scimark/scimarkutil/Random.k");
+import("konoha.class");
+import("konoha.float");
+import("konoha.array");
+import("konoha.while");
+import("konoha.global");
+import("konoha.assign");
+import("konoha.math");
+load("../scimark/scimarkutil/Constants.k");
+load("../scimark/scimarkutil/Random.k");
 
 /** Computes FFT's of complex, float precision data where n is an integer power of 2.
  * This appears to be slower than the Radix2 method,
@@ -109,7 +114,7 @@ class FFT {
 		int log = 0;
 		int k = 1;
 		while (k < n) {
-			log++;
+			log += 1;
 			k *= 2;
 		}
 		//if (n != (1 << log))

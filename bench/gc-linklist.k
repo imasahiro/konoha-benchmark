@@ -1,7 +1,10 @@
 /*
  * create link list
  */
-K.import("konoha");
+import("konoha.assign");
+import("konoha.class");
+import("konoha.const");
+import("konoha.while");
 class A {
     A next;
 }

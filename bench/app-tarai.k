@@ -1,7 +1,7 @@
 /*
  * tarai 12 6 0
  */
-K.import("konoha.class");
+import("konoha.class");
 
 int tarai(int x, int y, int z) {
 	if (y >= x) {

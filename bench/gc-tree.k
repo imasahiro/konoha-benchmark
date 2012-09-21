@@ -2,8 +2,15 @@
  * CreateTree
  * http://www.cs.cmu.edu/~spoons/gc/benchmarks.html
  */
-K.import("konoha");
-K.import("konoha.date")
+import("konoha.array");
+import("konoha.assign");
+import("konoha.class");
+import("konoha.const");
+import("konoha.float");
+import("konoha.int");
+import("konoha.null");
+import("konoha.while");
+import("konoha.date")
 
 class Node {
 	Node left, right;
@@ -71,7 +78,7 @@ class GCBench {
 		Node   tempTree;
 
 		if (PRINT) {
-			p("Creating " + iNumIters + " trees of depth " + depth);
+			System.p("Creating " + iNumIters + " trees of depth " + depth);
 		}
 		tStart = new Date().getTime();
 		int i = 0;
@@ -83,7 +90,7 @@ class GCBench {
 		}
 		tFinish = new Date().getTime();
 		if (PRINT) {
-			p("\tTop down construction took " + (tFinish - tStart) + "secs");
+			System.p("\tTop down construction took " + (tFinish - tStart) + "secs");
 		}
 		tStart = new Date().getTime();
 		int i = 0;
@@ -94,7 +101,7 @@ class GCBench {
 		}
 		tFinish = new Date().getTime();
 		if (PRINT) {
-			p("\tBottom up construction took " + (tFinish - tStart) + "secs");
+			System.p("\tBottom up construction took " + (tFinish - tStart) + "secs");
 		}
 
 	}
@@ -106,7 +113,7 @@ class GCBench {
 		float tElapsed;
 
 		if (PRINT) {
-			p(
+			System.p(
 					" Stretching memory with a binary tree of depth "
 					+ kStretchTreeDepth);
 		}
@@ -119,7 +126,7 @@ class GCBench {
 
 		// Create a long lived objects
 		if (PRINT) {
-			p(
+			System.p(
 					" Creating a long-lived binary tree of depth " +
 					kLongLivedTreeDepth);
 		}
@@ -128,7 +135,7 @@ class GCBench {
 
 		// Create long-lived array, filling half of it
 		if (PRINT) {
-			p(
+			System.p(
 					" Creating a long-lived array of "
 					+ kArraySize + " floats");
 		}
@@ -148,7 +155,7 @@ class GCBench {
 
 		if (longLivedTree == null || array[1000] != 1.0/1000) {
 			if (PRINT) {
-				p("Failed");
+				System.p("Failed");
 				// fake reference to LongLivedTree
 		// and array
 	// to keep them from being optimized away
@@ -159,7 +166,7 @@ class GCBench {
 		tElapsed = tFinish-tStart;
 		printDiagnostics();
 		if (PRINT) {
-			p("Completed in " + tElapsed + "s.");
+			System.p("Completed in " + tElapsed + "s.");
 		}
 	}
 }

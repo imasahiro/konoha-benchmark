@@ -1,14 +1,14 @@
 /*
  * scimark2 MonteCarlo bench
  */
-K.import("konoha.class");
-K.import("konoha.assign");
-K.import("konoha.float");
-K.import("konoha.while");
-K.import("konoha.math")
-K.import("konoha.const")
-K.load("../scimark/scimarkutil/Constants.k");
-K.load("../scimark/scimarkutil/Random.k");
+import("konoha.class");
+import("konoha.assign");
+import("konoha.float");
+import("konoha.while");
+import("konoha.math")
+import("konoha.const")
+load("../scimark/scimarkutil/Constants.k");
+load("../scimark/scimarkutil/Random.k");
 /**
  * Estimate Pi by approximating the area of a circle.
  * 

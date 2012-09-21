@@ -1,10 +1,10 @@
 /*
  * scimark2 SparseCompRow bench
  */
-K.import("konoha");
-K.import("konoha.math");
-K.load("../scimark/scimarkutil/Constants.k");
-K.load("../scimark/scimarkutil/Random.k");
+import("konoha");
+import("konoha.math");
+load("../scimark/scimarkutil/Constants.k");
+load("../scimark/scimarkutil/Random.k");
 
 class SparseCompRow {
 	/* multiple iterations used to make kernel have roughly

@@ -1,17 +1,18 @@
 /*
  * AO Benchmark
  */
-K.import("konoha.float");
-K.import("konoha.math");
-K.import("konoha.int");
-K.import("konoha.while");
-K.import("konoha.class");
-K.import("konoha.array");
-K.import("konoha.assign");
-K.import("konoha.null");
-K.import("konoha.string");
-K.import("konoha.bytes");
-K.import("posix.file");
+import("konoha.float");
+import("konoha.math");
+import("konoha.int");
+import("konoha.while");
+import("konoha.class");
+import("konoha.const");
+import("konoha.array");
+import("konoha.assign");
+import("konoha.null");
+import("konoha.string");
+import("konoha.bytes");
+import("posix.file");
 
 const WIDTH  = 64;
 const HEIGHT = 64;
@@ -267,7 +268,7 @@ class AObench {
 
 		FILE out = System.fopen("ao.ppm","w");
 		String s = "P6\n"+WIDTH + " " + HEIGHT+"\n255 ";
-		int len = s.getLength();
+		int len = s.getSize();
 		out.write(s.asBytes(), 0, len);
 
 		int i = 0;
